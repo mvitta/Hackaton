@@ -1,12 +1,28 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    
-</body>
-</html>
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <h1 id="tituloLogin">Login</h1>
+    <div class="login">
+        <hr>
+        <form method="post" class="formulario">
+            <div style="margin-top: 10px;">
+                <input type="text" placeholder="Ingresar Correo" id="usuario" name="usuario" />
+            </div>
+            <div style="margin-top: 10px;">
+                <input type="password" placeholder="Ingresar contraseña" id="contra" name="contra" />
+            </div>
+            <div style="margin-top: 10px;">
+                <button type="submit" class="btn btn-primary">Ingresar</button>
+                <button type="reset" class="btn btn-primary ">Cancelar</button>
+            </div>
+            <hr>
+            <div>
+                <a href="#" class="pregunta">¿Olvidaste tu contraseña?</a>
+            </div>
+            <div>
+                <a href="{{url_for('registro')}}" class="npregunta">¿No tienes cuenta?</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

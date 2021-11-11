@@ -19,43 +19,74 @@
     <div class=" container-md" style="margin-bottom: 40px; border-radius: 30px;">
         <div id="contenedorFormulario">
             <form id="formulario" method="post">
-                <div id="errorUsuario">
-                    <span><label><i class="icon "></i></label></span>
-                    <span>
-                        <input class="form-control" type="text" placeholder="Cedula" name="Cedula" />
-                    </span>
-                </div>
+                <span>
+                    <input class="form-control" type="text" placeholder="Cedula" name="Cedula" />
+                </span>
                 <div id="msgCedula" class="mensaje">
                 </div>
-                <span><label><i class="icon "></i></label></span>
                 <span class="incorrecto">
                     <input class="form-control" type="text" placeholder="Nombre" name="Nombre" />
                 </span>
                 <div id="msgNombre" class="mensaje">
                 </div>
-                <span><label><i class="icon"></i></label></span>
                 <span>
                     <input class="form-control" type="text" placeholder="Apellido" name="Apellido" />
                 </span>
                 <div id="msgApellido" class="mensaje">
                 </div>
-                <span><label><i class="icon"></i></label></span>
                 <span>
                     <input class="form-control" type="text" placeholder="Correo" name="Correo" />
                 </span>
                 <div id="msgCorreo" class="mensaje">
                 </div>
-                <span><label id="password"><i class="icon"></i></label></span>
+
+                <div style="margin-top: 10px; margin-bottom: 10px;">
+                    <div>
+                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1"
+                            value="Masculino">
+                        <label class="form-check-label" for="flexRadioDefault1">
+                            Masculino
+                        </label>
+                    </div>
+                    <div>
+                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2"
+                            checked value="Femenino">
+                        <label class="form-check-label" for="flexRadioDefault2">
+                            Femenino
+                        </label>
+                    </div>
+                </div>
+                <div>
+                    <strong><label for="">Fecha de Nacimiento: </label></strong><br><input class="form-control"
+                        type="datetime-local" style="margin-bottom: 10px;" name="fecha">
+                </div>
+
+                <div>
+                    <input class="form-control" type="text" placeholder="Direccion" name="direccion">
+                </div>
+
+                <div>
+                    <input class="form-control" type="text" placeholder="Ciudad" name="ciudad">
+                </div>
+                <div id="msgCiudad" class="mensaje">
+                </div>
+
+                <div>
+                    <input class="form-control" type="text" placeholder="Nombre de usuario" name="nombreUsuario">
+                </div>
+                <div id="msgNombreUsuario" class="mensaje">
+                </div>
+
                 <span>
                     <input class="form-control" type="password" placeholder="Contraseña" name="Contra" />
                 </span>
                 <div id="msgPass1" class="mensaje">
                 </div>
-                <span><label id="password"><i class="icon"></i></label></span>
                 <span>
                     <input class="form-control" type="password" placeholder="Repita su contraseña"
                         name="ContraRepetida" />
                 </span>
+
                 <div id="msgPass2" class="mensaje">
                 </div>
                 <br>

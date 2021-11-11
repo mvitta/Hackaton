@@ -1,10 +1,14 @@
 const form = document.getElementById("formulario");
+
 const errorCedula = document.getElementById("msgCedula");
 const errorNombre = document.getElementById("msgNombre");
 const errorApellido = document.getElementById("msgApellido");
 const errorCorreo = document.getElementById("msgCorreo");
+const errorCiudad = document.getElementById("msgCiudad");
+const errorNombreUsuario = document.getElementById("msgNombreUsuario");
 const errorContra1 = document.getElementById("msgPass1");
 const errorContra2 = document.getElementById("msgPass2");
+
 
 function validarCedula(valor) {
     if (valor.match(/^[0-9]+$/)) {
@@ -15,6 +19,15 @@ function validarCedula(valor) {
 }
 
 function validarNombre(valor) {
+    if (valor.match(/^[A-Za-z]+$/)) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
+function validarCiudad(valor) {
     if (valor.match(/^[A-Za-z]+$/)) {
         return true;
     }
@@ -41,6 +54,16 @@ function validarCorreo(valor) {
     }
 }
 
+function validarUsuario(valor) {
+    if (valor.match(/[^A-Za-z0-9]+/)) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
+
 function validarContra1(valor) {
     if (valor.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[^\W_]{8,}$/)) {
         return true;
@@ -60,18 +83,31 @@ function validarContra2(valor) {
 }
 
 form.addEventListener('submit', (e) => {
+
     let estado = "";
     // datos
     let datos = document.getElementsByClassName("form-control");
+    let sexo = document.getElementsByName("flexRadioDefault")
+
     let cedula = datos[0].value;
     let nombre = datos[1].value;
     let apellido = datos[2].value;
     let correo = datos[3].value;
-    let contra1 = datos[4].value;
-    let contra2 = datos[5].value;
+    let fechaNacimiento = datos[4].value;
+    let direccion = datos[5].value;
+    let ciudad = datos[6].value;
+    let nombreUsuario = datos[7].value;
+    let contra1 = datos[8].value;
+    let contra2 = datos[9].value;
 
-
-    console.log([cedula, nombre, apellido, correo, contra1, contra2])
+    valorSexo = "";
+    for (let i = 0; i < sexo.length; i++) {
+        const element = sexo[i];
+        if (element.checked) {
+            valorSexo = element.value
+        }
+    }
+    console.log(cedula, nombre, apellido, correo, fechaNacimiento, direccion, ciudad, nombreUsuario, contra1, contra2, valorSexo)
     // reinicio de errores
     errorCedula.innerHTML = "";
     errorNombre.innerHTML = "";
@@ -79,6 +115,8 @@ form.addEventListener('submit', (e) => {
     errorCorreo.innerHTML = "";
     errorContra1.innerHTML = "";
     errorContra2.innerHTML = "";
+    errorCiudad.innerHTML = "";
+    errorNombreUsuario.innerHTML = "";
     // validaciones
 
     if (!validarCedula(cedula)) {
@@ -109,12 +147,27 @@ form.addEventListener('submit', (e) => {
         estado += "OK";
     }
 
+    if (!validarCiudad(ciudad)) {
+        errorCiudad.innerHTML = "la ciudad no es valida";
+    }
+    else {
+        estado += "OK";
+    }
+
+    if (!validarUsuario(nombreUsuario)) {
+        errorNombreUsuario.innerHTML = "el nombre de usuario no es valido";
+    }
+    else {
+        estado += "OK";
+    }
+
     if (!validarContra1(contra1)) {
         errorContra1.innerHTML = "La Contraseña no es valida";
     }
     else {
         estado += "OK";
     }
+
     if (estado == "OKOKOKOKOK") {
         if (contra1 == contra2) {
             estado += "OK";
@@ -124,14 +177,9 @@ form.addEventListener('submit', (e) => {
         }
     }
 
-    console.log(estado)
+    if (estado == "OKOKOKOKOKOKOKOK") {
 
-    if (estado == "OKOKOKOKOKOK") {
-        console.log([cedula, nombre, apellido, correo, contra1])
-        document.getElementsByClassName('msgEnviado')[0].innerHTML = "Enviado";
-
-    }
-    else {
+    } else {
         e.preventDefault();
     }
 

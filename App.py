@@ -13,6 +13,9 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 
 ruta_index = "index.html"
+ruta_productos="productos.html"
+ruta_db="database.db"
+
 
 app = Flask(__name__)
 app.secret_key = os.urandom(34)
@@ -32,6 +35,19 @@ def registro():
 def producto():
     return render_template('baseProducto.html')
 
+@app.route("/productos")
+def productos():
+    try:
+        with sqlite3.connect(ruta_db) as con: 
+            con.row_factory = sqlite3.Row #Convierte la respuesta de la BD en un diccionario
+            cur = con.cursor()
+            cur.execute("SELECT * FROM productos LIMIT 4")
+            row_productos = cur.fetchall()
+            
+            return render_template(ruta_productos,row_productos=row_productos)
+    except Error:
+        print(Error)
+        return render_template(ruta_productos)
 
 if __name__ == "__main__":
     app.run(debug=True, port=8000)

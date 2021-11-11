@@ -7,7 +7,7 @@ app.secret_key = os.urandom(34)
 
 @app.route('/')
 def index():
-    return "Hola Tierra 5"
+    return "Hola Tierra 6"
 
 
 def main():

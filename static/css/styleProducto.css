@@ -1,0 +1,32 @@
+.contenedorGeneral {
+    display              : grid;
+    grid-template-columns: 1fr 350px;
+    grid-template-rows   : auto;
+    margin-left          : 40px;
+    margin-right         : 40px;
+    height               : auto;
+}
+
+.seccionProducto {
+    height: 500px;
+}
+
+.seccionCompra {
+    height : 500px;
+    padding: 20px;
+}
+
+.seccionPreguntas {
+    height: 500px;
+
+}
+
+.seccionComentarios {
+    height: 500px;
+
+}
+
+.seccionVendedor {
+    height: 500px;
+
+}

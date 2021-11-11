@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div>
+    <div class="contenedorGeneral">
+        <div class="seccionProducto"
+            style="border-right: 1px solid rgba(0, 0, 0, 0.200); border-top: 1px solid rgba(0, 0, 0, 0.200); border-left: 1px solid rgba(0, 0, 0, 0.200);">
+            <div style="text-align: center; margin-top: 30px;">
+                <img src="https://definicion.de/wp-content/uploads/2009/06/producto.png" alt=""
+                    style="width: 400px; height: 400px;">
+            </div>
+            <div style="text-align: center;">
+
+            </div>
+        </div>
+        <div class="seccionCompra"
+            style="border-top: 1px solid rgba(0, 0, 0, 0.200); border-right: 1px solid rgba(0, 0, 0, 0.200);">
+            <div>
+                <h1 class="display-6">Nombre del producto</h1>
+            </div>
+            <label for="" class="form-label">Precio</label>
+            <div style="margin-top: 10px;">$ 20.000</div>
+            <div class="form-floating" style="margin-top: 10px;">
+                <select class="form-select" id="floatingSelect" aria-label="Floating label select example">
+                    <option selected>0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                </select>
+                <label for="floatingSelect">Unidades a Comprar</label>
+            </div>
+            <div class="d-grid gap-2" style="margin-top: 10px;">
+                <button class="btn btn-primary" type="button">Comprar</button>
+                <button class="btn btn-primary" type="button">Agregar al carrito</button>
+            </div>
+            <div style="margin-top: 10px;">
+                <img src="/static/fonts/secure-shopping.png" alt="">
+                <label style="color: rgba(0, 0, 0, 0.432);" for="floatingSelect">Compra protegida</label>
+            </div>
+        </div>
+        <div class="seccionPreguntas" style="overflow-y: scroll; border: 1px solid rgba(0, 0, 0, 0.200);">
+            <div style="text-align: center;">
+                <h1 class="display-6">Preguntas y respuestas</h1>
+                <hr>
+            </div>
+            <div class="input-group">
+                <span class="input-group-text">escribe tu pregunta</span>
+                <textarea class="form-control" aria-label="With textarea"></textarea>
+                <button class="btn btn-primary" type="button" style="margin-left: 10px;">Preguntar</button>
+            </div>
+            <hr>
+            <div style="margin-top: 20px; text-align: center;">
+                <strong><label for="floatingSelect">Historial de Preguntas</label></strong>
+            </div>
+            <!-- jinja2 -->
+            <div class="pregunta" style="margin-right: 30px; margin-left: 30px; margin-top: 10px;">
+                ¿el producto viene refigerado?
+            </div>
+            <div class="respuesta" style="margin-right: 30px; margin-left: 30px;">
+                por supuesto, producto viene refigerado a una temperadura adecuada que evitara que se dañe
+            </div>
+            <div class="pregunta" style="margin-right: 30px; margin-left: 30px; margin-top: 10px;">
+                ¿el producto viene refigerado?
+            </div>
+            <div class="respuesta" style="margin-right: 30px; margin-left: 30px;">
+                por supuesto, producto viene refigerado a una temperadura adecuada que evitara que se dañe
+            </div>
+        </div>
+        <div class="seccionVendedor"
+            style="border-top: 1px solid rgba(0, 0, 0, 0.200); border-right: 1px solid rgba(0, 0, 0, 0.200);">
+            <div style="text-align: center;">
+                <label for="" class="form-label">Informacion del vendedor</label>
+                <hr>
+            </div>
+            <div style="text-align: center;">
+                <label for="" class="form-label">Ubicacion de la tienda</label>
+            </div>
+            <div style="margin-top: 10px;" style="text-align: center;">
+                <div>
+                    <img src="/static/fonts/colombia.png" alt="">
+                    <label style="color: rgba(0, 0, 0, 0.432);" for="floatingSelect">Colombia</label>
+                </div>
+            </div>
+            <hr>
+        </div>
+        <div class="seccionComentario"
+            style="overflow-y: scroll; border-right: 1px solid rgba(0, 0, 0, 0.200); border-bottom: 1px solid rgba(0, 0, 0, 0.200);">
+            <div style="text-align: center;">
+                <h1 class="display-6">Comentarios sobre el producto</h1>
+                <hr>
+            </div>
+            <hr>
+            <div style="margin-top: 20px; text-align: center;">
+                <strong><label for="floatingSelect">Historial de comentarios</label></strong>
+            </div>
+            <!-- jinja2 -->
+            <ul class="list-group">
+                <li class="list-group-item">comentario 1</li>
+                <li class="list-group-item">comentario 2</li>
+                <li class="list-group-item">comentario 3</li>
+                <li class="list-group-item">comentario 4</li>
+                <li class="list-group-item">comentario 5</li>
+            </ul>
+        </div>
+        <div class="seccionNueva"
+            style="border-right: 1px solid rgba(0, 0, 0, 0.200); border-bottom: 1px solid rgba(0, 0, 0, 0.200);">
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -91,7 +91,7 @@
                 </div>
                 <div class=" container-md" style="margin-bottom: 40px; border-radius: 30px;">
                     <div id="contenedorFormulario">
-                        <form id="formularioUsuarioInterno" method="post">
+                        <form id="formularioUsuarioInterno" action="/dashboardRegistrarUsuarioInterno" method="post">
                             <span>
                                 <input class="form-control" type="text" placeholder="Cedula" name="Cedula" />
                             </span>
@@ -130,7 +130,7 @@
                             <div id="msgFechaNacimiento" class="mensaje">
                             </div>
 
-                            <select class="form-control" aria-label=".form-select-lg example">
+                            <select class="form-control" name="cargo" aria-label=".form-select-lg example">
                                 <option selected>Cargo</option>
                                 <option value="Analista de servicio">Analista de servicio</option>
                                 <option value="Coordinador de servicio">Coordinador de servicio</option>

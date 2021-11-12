@@ -14,7 +14,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 ruta_index = "index.html"
 ruta_productos = "productos.html"
-ruta_db = "orion_db.db"
+ruta_db = "orion1_db.db"
 
 
 app = Flask(__name__)
@@ -78,8 +78,18 @@ def dashboardProductos():
 
 @app.route('/dashboardLotes')
 def dashboardLotes():
-    return render_template('dashboardLotes.html')
-
+    try:
+        conexion = conexionBaseDeDatos()
+        cur = conexion.cursor()
+        sql = "SELECT p.id_producto, p.nombre_producto, l.id_lote, lp.cantidad, lp.fecha_entrada, lp.fecha_salida FROM tb_lotes l, tb_productos p, tb_lotes_productos lp WHERE l.id_lote = lp.id_lote_producto AND p.id_producto = lp.id_producto"
+        cur.execute(sql)
+        conexion.commit()
+        registrosLotesProductos = cur.fetchall()
+        cur.close()
+        return render_template('dashboardLotes.html', registrosLotesProductos= registrosLotesProductos)
+    except Error:
+        print(Error)
+        return render_template("error !!!  :| ")
 
 @app.route('/dashboardProductosVendidos')
 def dashboardProductosVendidos():

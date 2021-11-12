@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de usuario internos</title>
+</head>
+
+<body>
+    <!--Cuerpo-->
+    <div class="container-fluid">
+        <div class="row">
+            <!--Sidebar-->
+            <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+                <div class="position-sticky pt-3">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="#">
+                                <span data-feather="user-check"></span>
+                                Perfil
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{url_for('dashboardProductos')}}">
+                                <span data-feather="gift"></span>
+                                Productos
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{url_for('dashboardLotes')}}">
+                                <span data-feather="archive"></span>
+                                Lotes
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{url_for('dashboardProductosVendidos')}}">
+                                <span data-feather="bar-chart-2"></span>
+                                Productos vendidos
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{url_for('dashboardUsuariosRegistrados')}}">
+                                <span data-feather="bar-chart-2"></span>
+                                Usuarios Registrados
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{url_for('dashboardComentariosUsuarios')}}">
+                                <span data-feather="layers"></span>
+                                Comentarios
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="nav flex-column mb-2">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{url_for('dashboardRegistrarUsuarioInterno')}}">
+                                <span data-feather="thumbs-up"></span>
+                                registrar usuario interno
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <span data-feather="file-text"></span>
+                                Opción 7
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <span data-feather="file-text"></span>
+                                Opción 8
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <span data-feather="file-text"></span>
+                                Opción 9
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+            <!--Fin del Sidebar-->
+            <!-- Cuerpo -->
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+                {% extends "base.html" %}
+                {% block content %}
+                <div id="tituloRegistroUsuario">
+                    <h1>Registro de usuario interno</h1>
+                </div>
+                <div class=" container-md" style="margin-bottom: 40px; border-radius: 30px;">
+                    <div id="contenedorFormulario">
+                        <form id="formularioUsuarioInterno" method="post">
+                            <span>
+                                <input class="form-control" type="text" placeholder="Cedula" name="Cedula" />
+                            </span>
+                            <div id="msgCedula" class="mensaje">
+                            </div>
+                            <span class="incorrecto">
+                                <input class="form-control" type="text" placeholder="Nombre" name="Nombre" />
+                            </span>
+                            <div id="msgNombre" class="mensaje">
+                            </div>
+                            <span>
+                                <input class="form-control" type="text" placeholder="Apellido" name="Apellido" />
+                            </span>
+                            <div id="msgApellido" class="mensaje">
+                            </div>
+                            <div style="margin-top: 10px; margin-bottom: 10px;">
+                                <div>
+                                    <input class="form-check-input" type="radio" name="flexRadioDefault"
+                                        id="flexRadioDefault1" value="Masculino">
+                                    <label class="form-check-label" for="flexRadioDefault1">
+                                        Masculino
+                                    </label>
+                                </div>
+                                <div>
+                                    <input class="form-check-input" type="radio" name="flexRadioDefault"
+                                        id="flexRadioDefault2" checked value="Femenino">
+                                    <label class="form-check-label" for="flexRadioDefault2">
+                                        Femenino
+                                    </label>
+                                </div>
+                            </div>
+                            <div>
+                                <strong><label for="">Fecha de Nacimiento: </label></strong><br><input
+                                    class="form-control" type="date" style="margin-bottom: 10px;" name="fecha">
+                            </div>
+                            <div id="msgFechaNacimiento" class="mensaje">
+                            </div>
+
+                            <select class="form-control" aria-label=".form-select-lg example">
+                                <option selected>Cargo</option>
+                                <option value="Analista de servicio">Analista de servicio</option>
+                                <option value="Coordinador de servicio">Coordinador de servicio</option>
+                                <option value="Gerente de cobranza">Gerente de cobranza</option>
+                                <option value="Analista de suministros">Analista de suministros</option>
+                            </select>
+                            <div id="msgCargo" class="mensaje">
+                            </div>
+
+                            <div>
+                                <input class="form-control" type="text" placeholder="Direccion" name="direccion">
+                            </div>
+
+                            <div>
+                                <input class="form-control" type="text" placeholder="Ciudad" name="ciudad">
+                            </div>
+                            <div id="msgCiudad" class="mensaje">
+                            </div>
+
+                            <div>
+                                <input class="form-control" type="text" placeholder="Nombre de usuario"
+                                    name="nombreUsuario">
+                            </div>
+                            <div id="msgNombreUsuario" class="mensaje">
+                            </div>
+
+                            <span>
+                                <input class="form-control" type="password" placeholder="Contraseña" name="Contra" />
+                            </span>
+                            <div id="msgPass1" class="mensaje">
+                            </div>
+                            <span>
+                                <input class="form-control" type="password" placeholder="Repita su contraseña"
+                                    name="ContraRepetida" />
+                            </span>
+
+                            <div id="msgPass2" class="mensaje">
+                            </div>
+                            <br>
+                            <hr>
+                            <div style="text-align: center;">
+                                <button type="submit" class="btn btn-primary">Guardar registro</button>
+                                <button type="reset" class="btn btn-primary">Borrar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <script type="text/javascript"
+                    src="{{ url_for('static', filename='js/validarRegistroUsuariosInterno.js') }}"></script>
+                {% endblock %}
+            </main>
+        </div>
+    </div>
+</body>
+
+</html>

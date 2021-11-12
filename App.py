@@ -100,13 +100,16 @@ def dashboardUsuariosRegistrados():
         return render_template("dashboardUsuariosRegistrados.html", registrosUsuarios=registrosUsuarios)
     except Error:
         print(Error)
-        
-    
 
 
 @app.route('/dashboardComentariosUsuarios')
 def dashboardComentariosUsuarios():
     return render_template('dashboardComentariosUsuarios.html')
+
+
+@app.route('/dashboardRegistrarUsuarioInterno', methods=['POST', 'GET'])
+def dashboardRegistrarUsuarioInterno():
+    return render_template('dashboardRegistrarUsuarioInterno.html')
 
 
 @app.route('/producto/<string:id>', methods=['POST', 'GET'])

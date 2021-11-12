@@ -8,17 +8,17 @@
         
             <div class="card peli-card"><img class="card-img-top w-100 d-block" style="height: 300px;width: 70px;" src="data:image/png;base64,{{ r['imagen'] }}">
                 <div class="card-body">
-                    <h4 class="card-title">{{ r["nombre"] }}</h4>
+                    <h4 class="card-title">{{ r["nombre_producto"] }}</h4>
                     <div class="table-responsive">
                         <table class="table table-striped table-hover table-sm">
                             <tbody>
                                 <tr>
                                     <th>Precio:</th>
-                                    <td>${{ r["precio_unitario"] }}</td>
+                                    <td>${{ r["precio_unidad"] }}</td>
                                 </tr>
                                 <tr>
                                     <th>Cantidad disponibles:</th>
-                                    <td>{{ r.cantidad_inventario }}</td>
+                                    <td>{{ r.total_unidades }}</td>
                                 </tr>
                                 <tr>
                                     <th>Unidades vendidas:</th>
@@ -26,11 +26,11 @@
                                 </tr>
                                 <tr>
                                     <th>Puntuacion:</th>
-                                    <td>{{ r.calificacion }}</td>
+                                    <td>{{ r.calificacion_producto }}</td>
                                 </tr>
                             </tbody>
                         </table>
-                    </div><button class="btn btn-primary" type="button" onclick="window.location.href='/producto/{{r.codigo_producto}}'">Ver Detalles</button>
+                    </div><button class="btn btn-primary" type="button" onclick="window.location.href='/producto/{{r.id_producto}}'">Ver Detalles</button>
                 </div>
             </div>
         

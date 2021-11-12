@@ -14,7 +14,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 ruta_index = "index.html"
 ruta_productos = "productos.html"
-ruta_db = "orion_db.db"
+ruta_db = "orion1_db.db"
 
 
 app = Flask(__name__)
@@ -116,7 +116,7 @@ def producto(id=None):
             con.row_factory = sqlite3.Row  # Convierte la respuesta de la BD en un diccionario
             cur = con.cursor()
             cur.execute(
-                "SELECT * FROM productos WHERE codigo_producto=?", [id])
+                "SELECT * FROM tb_productos WHERE id_producto=?", [id])
             row_producto = cur.fetchone()
 
             return render_template('baseProducto.html', row_producto=row_producto)
@@ -131,7 +131,7 @@ def productos():
         with sqlite3.connect(ruta_db) as con:
             con.row_factory = sqlite3.Row  # Convierte la respuesta de la BD en un diccionario
             cur = con.cursor()
-            cur.execute("SELECT * FROM productos LIMIT 4")
+            cur.execute("SELECT * FROM tb_productos")
             row_productos = cur.fetchall()
 
             return render_template(ruta_productos, row_productos=row_productos)

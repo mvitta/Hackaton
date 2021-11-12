@@ -16,10 +16,10 @@
         <div class="seccionCompra"
             style="border-top: 1px solid rgba(0, 0, 0, 0.200); border-right: 1px solid rgba(0, 0, 0, 0.200);">
             <div>
-                <h1 class="display-6">{{row_producto.nombre}}</h1>
+                <h1 class="display-6">{{row_producto.nombre_producto}}</h1>
             </div>
             <label for="" class="form-label">Precio</label>
-            <div style="margin-top: 10px;">{{row_producto.precio_unitario}}</div>
+            <div style="margin-top: 10px;">{{row_producto.precio_unidad}}</div>
             <div class="form-floating" style="margin-top: 10px;">
                 <select class="form-select" id="floatingSelect" aria-label="Floating label select example">
                     <option selected>0</option>
@@ -43,14 +43,18 @@
         </div>
         <div class="seccionPreguntas" style="overflow-y: scroll; border: 1px solid rgba(0, 0, 0, 0.200);">
             <div style="text-align: center;">
-                <h1 class="display-6">Preguntas y respuestas</h1>
+                <h1 class="display-6">Comentarios</h1>
                 <hr>
             </div>
-            <div class="input-group">
-                <span class="input-group-text">escribe tu pregunta</span>
-                <textarea class="form-control" aria-label="With textarea"></textarea>
-                <button class="btn btn-primary" type="button" style="margin-left: 10px;">Preguntar</button>
-            </div>
+            <form action="/comentar/{{row_producto.id_producto}}" method="post" class="input-group">
+            
+                    <span class="input-group-text">Escribe tu comentario</span>
+                    <textarea class="form-control" aria-label="With textarea"></textarea>
+                    <span class="input-group-text">Puntuacion</span>
+                    <input type="number" placeholder="1-5" min="1" max="5">
+                    <input class="btn btn-primary" type="submit" style="margin-left: 10px;" value="Comentar">
+                
+            </form>
             <hr>
             <div style="margin-top: 20px; text-align: center;">
                 <strong><label for="floatingSelect">Historial de Preguntas</label></strong>

@@ -35,6 +35,28 @@ def login():
 
 @app.route('/registro', methods=['POST', 'GET'])
 def registro():
+    if request.method == "POST":
+        nombre = request.form.get('Nombre')
+        correo = request.form.get('Correo')
+        sexo = request.form.get('flexRadioDefault')
+        nacimiento = request.form.get('fecha')
+        direccion = request.form.get('direccion')
+        ciudad = request.form.get('ciudad')
+        nombre_usuario = request.form.get('nombreUsuario')
+        password = request.form.get('Contra')
+        apellido = request.form.get('Apellido')
+        cedula = request.form.get('Cedula')
+        try:
+            conexion = conexionBaseDeDatos()
+            cur = conexion.cursor()
+            sql = "INSERT INTO tb_users (nombre, correo, sexo, nacimiento, direccion, ciudad, acumulado_compras, num_bonos, nombre_usuario, password, rol, apellido, cedula) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+            cur.execute(sql, [nombre, correo, sexo, nacimiento, direccion, ciudad,
+                        0, 0, nombre_usuario, password, "comprador", apellido, cedula])
+            conexion.commit()
+            cur.close()
+            return render_template("registro.html")
+        except Error as err:
+            print(err)
     return render_template('registro.html')
 
 
@@ -48,7 +70,6 @@ def dashboardProductos():
         conexion.commit()
         registrosProductos = cur.fetchall()
         cur.close()
-        print(registrosProductos)
         return render_template("dashboardProducto.html", registrosProductos=registrosProductos)
     except Error:
         print(Error)
@@ -67,7 +88,20 @@ def dashboardProductosVendidos():
 
 @app.route('/dashboardUsuariosRegistrados')
 def dashboardUsuariosRegistrados():
-    return render_template('dashboardUsuariosRegistrados.html')
+    try:
+        conexion = conexionBaseDeDatos()
+        cur = conexion.cursor()
+        sql = "SELECT * FROM tb_users"
+        cur.execute(sql)
+        conexion.commit()
+        registrosUsuarios = cur.fetchall()
+        cur.close()
+        print(registrosUsuarios)
+        return render_template("dashboardUsuariosRegistrados.html", registrosUsuarios=registrosUsuarios)
+    except Error:
+        print(Error)
+        
+    
 
 
 @app.route('/dashboardComentariosUsuarios')

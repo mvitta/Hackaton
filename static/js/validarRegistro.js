@@ -197,18 +197,7 @@ form.addEventListener('submit', (e) => {
     }
     console.log(estado)
     if (estado == "OKOKOKOKOKOKOKOKOKOK") {
-        console.log(cedula);
-        console.log(nombre);
-        console.log(apellido);
-        console.log(correo);
-        console.log(fechaNacimiento);
-        console.log(direccion);
-        console.log(ciudad);
-        console.log(nombreUsuario);
-        console.log(contra1);
-        console.log(contra2);
-        console.log(document.getElementById("flexCheckDefault").checked)
-        e.preventDefault();
+        
     } else {
         e.preventDefault();
     }

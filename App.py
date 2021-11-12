@@ -31,9 +31,19 @@ def registro():
     return render_template('registro.html')
 
 
-@app.route('/producto', methods=['POST', 'GET'])
-def producto():
-    return render_template('baseProducto.html')
+@app.route('/producto/<string:id>', methods=['POST', 'GET'])
+def producto(id=None):
+    try:
+        with sqlite3.connect(ruta_db) as con: 
+            con.row_factory = sqlite3.Row #Convierte la respuesta de la BD en un diccionario
+            cur = con.cursor()
+            cur.execute("SELECT * FROM productos WHERE codigo_producto=?",[id])
+            row_producto = cur.fetchone()
+            
+            return render_template('baseProducto.html',row_producto=row_producto)
+    except Error:
+        print(Error)
+        return render_template(ruta_productos)
 
 @app.route("/productos")
 def productos():

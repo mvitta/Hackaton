@@ -6,7 +6,7 @@
         <div class="seccionProducto"
             style="border-right: 1px solid rgba(0, 0, 0, 0.200); border-top: 1px solid rgba(0, 0, 0, 0.200); border-left: 1px solid rgba(0, 0, 0, 0.200);">
             <div style="text-align: center; margin-top: 30px;">
-                <img src="https://definicion.de/wp-content/uploads/2009/06/producto.png" alt=""
+                <img src="data:image/png;base64,{{ row_producto.imagen }}" alt=""
                     style="width: 400px; height: 400px;">
             </div>
             <div style="text-align: center;">
@@ -16,10 +16,10 @@
         <div class="seccionCompra"
             style="border-top: 1px solid rgba(0, 0, 0, 0.200); border-right: 1px solid rgba(0, 0, 0, 0.200);">
             <div>
-                <h1 class="display-6">Nombre del producto</h1>
+                <h1 class="display-6">{{row_producto.nombre}}</h1>
             </div>
             <label for="" class="form-label">Precio</label>
-            <div style="margin-top: 10px;">$ 20.000</div>
+            <div style="margin-top: 10px;">{{row_producto.precio_unitario}}</div>
             <div class="form-floating" style="margin-top: 10px;">
                 <select class="form-select" id="floatingSelect" aria-label="Floating label select example">
                     <option selected>0</option>

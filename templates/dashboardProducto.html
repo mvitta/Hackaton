@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="{{ url_for('static', filename='dashboard/css/bootstrap.min.css') }}" rel="stylesheet">
+  <link href="{{ url_for('static', filename='dashboard/css/dashboard.css') }}" rel="stylesheet">
+  <title>Productos</title>
+</head>
+
+<body>
+  <!--Cuerpo-->
+  <div class="container-fluid">
+    <div class="row">
+      <!--Sidebar-->
+      <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+        <div class="position-sticky pt-3">
+          <ul class="nav flex-column">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="#">
+                <span data-feather="user-check"></span>
+                Perfil
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{url_for('dashboardProductos')}}">
+                <span data-feather="gift"></span>
+                Productos
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{url_for('dashboardLotes')}}">
+                <span data-feather="archive"></span>
+                Lotes
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{url_for('dashboardProductosVendidos')}}">
+                <span data-feather="bar-chart-2"></span>
+                Productos vendidos
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{url_for('dashboardUsuariosRegistrados')}}">
+                <span data-feather="bar-chart-2"></span>
+                Usuarios Registrados
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{url_for('dashboardComentariosUsuarios')}}">
+                <span data-feather="layers"></span>
+                Comentarios
+              </a>
+            </li>
+          </ul>
+          <ul class="nav flex-column mb-2">
+            <li class="nav-item">
+              <a class="nav-link" href="#">
+                <span data-feather="thumbs-up"></span>
+                Opción 6
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">
+                <span data-feather="file-text"></span>
+                Opción 7
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">
+                <span data-feather="file-text"></span>
+                Opción 8
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">
+                <span data-feather="file-text"></span>
+                Opción 9
+              </a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+      <!--Fin del Sidebar-->
+      <!-- Cuerpo -->
+      <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+        {% extends "base.html" %}
+        {% block content %}
+        <div
+          class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+          <h1 class="h2">Producto</h1>
+        </div>
+
+        <div class="table-responsive">
+          <table class="table table-striped table-sm">
+            <thead>
+              <tr>
+                <th scope="col">id_producto</th>
+                <th scope="col">Nombre_producto</th>
+                <th scope="col">categoria</th>
+                <th scope="col">descripcion</th>
+                <th scope="col">tipo_unidad</th>
+                <th scope="col">precio_unidad</th>
+                <th scope="col">unidades_vendidas</th>
+                <th scope="col">porcentaje_promo</th>
+                <th scope="col">valor_ventas</th>
+                <th scope="col">bono_decuento</th>
+                <th scope="col">calificacion_producto</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for r in registrosProductos %}
+              <tr>
+                <td>{{r[0]}}</td>
+                <td>{{r[1]}}</td>
+                <td>{{r[2]}}</td>
+                <td>{{r[3]}}</td>
+                <td>{{r[4]}}</td>
+                <td>{{r[5]}}</td>
+                <td>{{r[6]}}</td>
+                <td>{{r[7]}}</td>
+                <td>{{r[8]}}</td>
+                <td>{{r[9]}}</td>
+                <td>{{r[10]}}</td>
+
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        {% endblock %}
+      </main>
+
+    </div>
+  </div>
+
+  <!--Fin pie de pagina-->
+  <script src="js/bootstrap.bundle.min.js"></script>
+  <script src="js/feather.min.js"></script>
+  <script src="js/Chart.min.js"></script>
+  <script src="js/dashboard.js"></script>
+</body>
+
+</html>

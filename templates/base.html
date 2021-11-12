@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename= 'css/styleLoginRegistro.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename= 'css/styleProducto.css') }}">
-
+    <link href="{{ url_for('static', filename='dashboard/css/dashboard.css') }}" rel="stylesheet">
 </head>
 
 <body>
@@ -26,8 +26,10 @@
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item"><a class="nav-link" href="/productos">Productos</a></li>
                     <li class="nav-item"><a class="nav-link" href="/busqueda">Busqueda</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/dashboard">Dashboard</a></li>
-                </ul><span class="navbar-text actions"> <a class="login" href="{{url_for('login')}}">Iniciar Sesión</a></span>
+                    <li class="nav-item"><a class="nav-link"
+                            href="{{url_for('dashboardProductos')}}">Dashboard</a></li>
+                </ul><span class="navbar-text actions"> <a class="login" href="{{url_for('login')}}">Iniciar
+                        Sesión</a></span>
                 <span class="navbar-text actions"><a class="btn btn-light action-button" role="button"
                         href="{{url_for('registro')}}">Registro</a></span>
 
@@ -53,6 +55,10 @@
     </footer>
     <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='js/validarRegistro.js' ) }}"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/feather.min.js"></script>
+    <script src="js/Chart.min.js"></script>
+    <script src="js/dashboard.js"></script>
 </body>
 
 </html>

@@ -112,6 +112,22 @@ def dashboardRegistrarUsuarioInterno():
     return render_template('dashboardRegistrarUsuarioInterno.html')
 
 
+@app.route('/dashboardRegistrosUsuariosInternos', methods=['GET'])
+def dashboardRegistrosUsuariosInternos():
+    try:
+        conexion = conexionBaseDeDatos()
+        cur = conexion.cursor()
+        sql = "SELECT * FROM tb_empleados"
+        cur.execute(sql)
+        conexion.commit()
+        registrosUsuariosInternos = cur.fetchall()
+        cur.close()
+        print(registrosUsuariosInternos)
+        return render_template('dashboardRegistrosUsuariosInternos.html', registrosUsuariosInternos=registrosUsuariosInternos)
+    except Error:
+        print(Error)
+
+
 @app.route('/producto/<string:id>', methods=['POST', 'GET'])
 def producto(id=None):
     try:

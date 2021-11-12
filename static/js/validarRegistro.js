@@ -8,7 +8,8 @@ const errorCiudad = document.getElementById("msgCiudad");
 const errorNombreUsuario = document.getElementById("msgNombreUsuario");
 const errorContra1 = document.getElementById("msgPass1");
 const errorContra2 = document.getElementById("msgPass2");
-
+const errorFechaNacimiento = document.getElementById("msgFechaNacimiento");
+const errorTerminos = document.getElementById("msgTerminos");
 
 function validarCedula(valor) {
     if (valor.match(/^[0-9]+$/)) {
@@ -55,7 +56,7 @@ function validarCorreo(valor) {
 }
 
 function validarUsuario(valor) {
-    if (valor.match(/[^A-Za-z0-9]+/)) {
+    if (valor.match(/^[A-Za-z0-9]+$/)) {
         return true;
     }
     else {
@@ -107,7 +108,7 @@ form.addEventListener('submit', (e) => {
             valorSexo = element.value
         }
     }
-    console.log(cedula, nombre, apellido, correo, fechaNacimiento, direccion, ciudad, nombreUsuario, contra1, contra2, valorSexo)
+
     // reinicio de errores
     errorCedula.innerHTML = "";
     errorNombre.innerHTML = "";
@@ -117,7 +118,11 @@ form.addEventListener('submit', (e) => {
     errorContra2.innerHTML = "";
     errorCiudad.innerHTML = "";
     errorNombreUsuario.innerHTML = "";
+    errorFechaNacimiento.innerHTML = "";
+    errorTerminos.innerHTML = "";
     // validaciones
+
+
 
     if (!validarCedula(cedula)) {
         errorCedula.innerHTML = "La cedula no es valida";
@@ -147,6 +152,12 @@ form.addEventListener('submit', (e) => {
         estado += "OK";
     }
 
+    if (fechaNacimiento == "") {
+        errorFechaNacimiento.innerHTML = "Debe ingresar una fecha valida";
+    } else {
+        estado += "OK";
+    }
+
     if (!validarCiudad(ciudad)) {
         errorCiudad.innerHTML = "la ciudad no es valida";
     }
@@ -168,7 +179,15 @@ form.addEventListener('submit', (e) => {
         estado += "OK";
     }
 
-    if (estado == "OKOKOKOKOK") {
+
+    if (document.getElementById("flexCheckDefault").checked) {
+        estado += "OK";
+    }
+    else {
+        errorTerminos.innerHTML = "Debes aceptar los terminos y condiciones";
+    }
+
+    if (estado == "OKOKOKOKOKOKOKOKOK") {
         if (contra1 == contra2) {
             estado += "OK";
         }
@@ -176,9 +195,20 @@ form.addEventListener('submit', (e) => {
             errorContra2.innerHTML = "Las Contrasena no coinciden"
         }
     }
-
-    if (estado == "OKOKOKOKOKOKOKOK") {
-
+    console.log(estado)
+    if (estado == "OKOKOKOKOKOKOKOKOKOK") {
+        console.log(cedula);
+        console.log(nombre);
+        console.log(apellido);
+        console.log(correo);
+        console.log(fechaNacimiento);
+        console.log(direccion);
+        console.log(ciudad);
+        console.log(nombreUsuario);
+        console.log(contra1);
+        console.log(contra2);
+        console.log(document.getElementById("flexCheckDefault").checked)
+        e.preventDefault();
     } else {
         e.preventDefault();
     }

@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <h1 id="tituloLogin">Login usuario interno</h1>
+    <div class="login">
+        <hr>
+        <form method="post" action="/login" class="formulario">
+            <div style="margin-top: 10px;">
+                <input type="text" placeholder="Nombre de usuario" id="usuario" name="usuario" />
+            </div>
+            <div style="margin-top: 10px;">
+                <input type="password" placeholder="Ingresar contraseña" id="contra" name="contra" />
+            </div>
+            <div style="margin-top: 10px;">
+                <button type="submit" class="btn btn-primary">Ingresar</button>
+                <button type="reset" class="btn btn-primary ">Cancelar</button>
+            </div>
+            <hr>
+            <div>
+                <a href="#" class="pregunta">¿Olvidaste tu contraseña?</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

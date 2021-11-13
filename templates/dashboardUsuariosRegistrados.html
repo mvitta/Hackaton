@@ -117,6 +117,7 @@
                                 <th scope="col">rol</th>
                                 <th scope="col">apellido</th>
                                 <th scope="col">cedula</th>
+                                <th scope="col">ediciones</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -136,6 +137,14 @@
                                 <td>{{r[11]}}</td>
                                 <td>{{r[12]}}</td>
                                 <td>{{r[13]}}</td>
+                                <td>
+                                    <div class="btn-group">
+                                        <button id="editar" type="button" class="btn btn-primary"
+                                            style="margin: 5px;">Editar</button>
+                                        <button id="editar" type="button" class="btn btn-primary"
+                                            style="margin: 5px;">Eliminar</button>
+                                    </div>
+                                </td>
                             </tr>
                             {% endfor %}
                         </tbody>

@@ -31,6 +31,12 @@
                             </a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link" href="{{url_for('dashboardCrearProducto')}}">
+                                <span data-feather="gift"></span>
+                                Agregar productos
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" href="{{url_for('dashboardLotes')}}">
                                 <span data-feather="archive"></span>
                                 Lotes
@@ -94,35 +100,35 @@
                 </div>
                 <div class="table-responsive">
                     <table class="table table-striped table-sm">
-                      <thead>
-                        <tr>
-                          <th scope="col">id_producto</th>
-                          <th scope="col">Nombre_producto</th>
-                          <th scope="col">Numero Lote</th>
-                          <th scope="col">Cantidad de Unidades Actuales en el Lote</th>
-                          <th scope="col">Fecha Entrada del Lote en el Inventario</th>
-                          <th scope="col">Fecha Última de Salida del Producto del Lote</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {% for r in registrosLotesProductos %}
-                        <tr>
-                          <td>{{r[0]}}</td>
-                          <td>{{r[1]}}</td>
-                          <td>{{r[2]}}</td>
-                          <td>{{r[3]}}</td>
-                          <td>{{r[4]}}</td>
-                          <td>{{r[5]}}</td>
-                        </tr>
-                        {% endfor %}
-                      </tbody>
+                        <thead>
+                            <tr>
+                                <th scope="col">id_producto</th>
+                                <th scope="col">Nombre_producto</th>
+                                <th scope="col">Numero Lote</th>
+                                <th scope="col">Cantidad de Unidades Actuales en el Lote</th>
+                                <th scope="col">Fecha Entrada del Lote en el Inventario</th>
+                                <th scope="col">Fecha Última de Salida del Producto del Lote</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for r in registrosLotesProductos %}
+                            <tr>
+                                <td>{{r[0]}}</td>
+                                <td>{{r[1]}}</td>
+                                <td>{{r[2]}}</td>
+                                <td>{{r[3]}}</td>
+                                <td>{{r[4]}}</td>
+                                <td>{{r[5]}}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
                     </table>
-                  </div>
                 </div>
-                {% endblock %}
-            </main>
-
         </div>
+        {% endblock %}
+        </main>
+
+    </div>
     </div>
 
     <!--Fin pie de pagina-->

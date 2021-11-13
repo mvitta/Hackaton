@@ -143,108 +143,127 @@ def registro():
 
 @app.route('/dashboarProductos')
 def dashboardProductos():
-    try:
-        conexion = conexionBaseDeDatos()
-        cur = conexion.cursor()
-        sql = "SELECT * FROM tb_productos"
-        cur.execute(sql)
-        conexion.commit()
-        registrosProductos = cur.fetchall()
-        cur.close()
-        return render_template("dashboardProducto.html", registrosProductos=registrosProductos)
-    except Error:
-        print(Error)
-        return render_template("error !!!  :| ")
+    if "usuario" in session:
+        try:
+            conexion = conexionBaseDeDatos()
+            cur = conexion.cursor()
+            sql = "SELECT * FROM tb_productos"
+            cur.execute(sql)
+            conexion.commit()
+            registrosProductos = cur.fetchall()
+            cur.close()
+            return render_template("dashboardProducto.html", registrosProductos=registrosProductos)
+        except Error:
+            print(Error)
+            return render_template("error !!!  :| ")
+    else:
+        return "Por favor inicie sesion"
 
 
 @app.route('/dashboardLotes')
 def dashboardLotes():
-    try:
-        conexion = conexionBaseDeDatos()
-        cur = conexion.cursor()
-        sql = "SELECT p.id_producto, p.nombre_producto, l.id_lote, lp.cantidad, lp.fecha_entrada, lp.fecha_salida FROM tb_lotes l, tb_productos p, tb_lotes_productos lp WHERE l.id_lote = lp.id_lote_producto AND p.id_producto = lp.id_producto"
-        cur.execute(sql)
-        conexion.commit()
-        registrosLotesProductos = cur.fetchall()
-        cur.close()
-        return render_template('dashboardLotes.html', registrosLotesProductos=registrosLotesProductos)
-    except Error:
-        print(Error)
-        return render_template("error !!!  :| ")
+    if "usuario" in session:
+        try:
+            conexion = conexionBaseDeDatos()
+            cur = conexion.cursor()
+            sql = "SELECT p.id_producto, p.nombre_producto, l.id_lote, lp.cantidad, lp.fecha_entrada, lp.fecha_salida FROM tb_lotes l, tb_productos p, tb_lotes_productos lp WHERE l.id_lote = lp.id_lote_producto AND p.id_producto = lp.id_producto"
+            cur.execute(sql)
+            conexion.commit()
+            registrosLotesProductos = cur.fetchall()
+            cur.close()
+            return render_template('dashboardLotes.html', registrosLotesProductos=registrosLotesProductos)
+        except Error:
+            print(Error)
+            return render_template("error !!!  :| ")
+    else:
+        return "Por favor inicie sesion"
 
 
 @app.route('/dashboardProductosVendidos')
 def dashboardProductosVendidos():
-    return render_template('dashboardProductosVendidos.html')
+    if "usuario" in session:
+        return render_template('dashboardProductosVendidos.html')
+    else:
+        return "Por favor inicie sesion"
 
 
 @app.route('/dashboardUsuariosRegistrados')
 def dashboardUsuariosRegistrados():
-    try:
-        conexion = conexionBaseDeDatos()
-        cur = conexion.cursor()
-        sql = "SELECT * FROM tb_users"
-        cur.execute(sql)
-        conexion.commit()
-        registrosUsuarios = cur.fetchall()
-        cur.close()
-        print(registrosUsuarios)
-        return render_template("dashboardUsuariosRegistrados.html", registrosUsuarios=registrosUsuarios)
-    except Error:
-        print(Error)
-
+    if "usuario" in session:
+        try:
+            conexion = conexionBaseDeDatos()
+            cur = conexion.cursor()
+            sql = "SELECT * FROM tb_users"
+            cur.execute(sql)
+            conexion.commit()
+            registrosUsuarios = cur.fetchall()
+            cur.close()
+            print(registrosUsuarios)
+            return render_template("dashboardUsuariosRegistrados.html", registrosUsuarios=registrosUsuarios)
+        except Error:
+            print(Error)
+    else:
+        return "Por favor inicie sesion"
 
 @app.route('/dashboardComentariosUsuarios')
 def dashboardComentariosUsuarios():
-    return render_template('dashboardComentariosUsuarios.html')
+    if "usuario" in session:
+        return render_template('dashboardComentariosUsuarios.html')
+    else:
+        return "Por favor inicie sesion"
 
 
 @app.route('/dashboardRegistrarUsuarioInterno', methods=['POST', 'GET'])
 def dashboardRegistrarUsuarioInterno():
-    if request.method == "POST":
-        nombre = escape(request.form.get('Nombre'))
-        correo = escape(request.form.get('Correo'))
-        sexo = escape(request.form.get('flexRadioDefault'))
-        nacimiento = escape(request.form.get('fecha'))
-        cargo = escape(request.form.get('cargo'))
-        direccion = escape(request.form.get('direccion'))
-        ciudad = escape(request.form.get('ciudad'))
-        nombre_usuario = escape(request.form.get('nombreUsuario'))
-        password = escape(request.form.get('Contra'))
-        hash = generate_password_hash(password)
-        apellido = escape(request.form.get('Apellido'))
-        cedula = escape(request.form.get('Cedula'))
+    if "usuario" in session:
+        if request.method == "POST":
+            nombre = escape(request.form.get('Nombre'))
+            correo = escape(request.form.get('Correo'))
+            sexo = escape(request.form.get('flexRadioDefault'))
+            nacimiento = escape(request.form.get('fecha'))
+            cargo = escape(request.form.get('cargo'))
+            direccion = escape(request.form.get('direccion'))
+            ciudad = escape(request.form.get('ciudad'))
+            nombre_usuario = escape(request.form.get('nombreUsuario'))
+            password = escape(request.form.get('Contra'))
+            hash = generate_password_hash(password)
+            apellido = escape(request.form.get('Apellido'))
+            cedula = escape(request.form.get('Cedula'))
 
-        try:
-            conexion = conexionBaseDeDatos()
-            cur = conexion.cursor()
-            sql = "INSERT INTO tb_empleados (id_empleado,cedula,nombre, apellido,cargo, sexo, fecha_nacimiento, direccion, ciudad, nombre_usuario, password, rol) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
-            cur.execute(sql, [cedula, cedula, nombre, apellido, cargo, sexo,
-                        nacimiento, direccion, ciudad, nombre_usuario, hash, "interno"])
-            conexion.commit()
-            cur.close()
-            return render_template("dashboardRegistrarUsuarioInterno.html")
-        except Error as err:
-            print(err)
+            try:
+                conexion = conexionBaseDeDatos()
+                cur = conexion.cursor()
+                sql = "INSERT INTO tb_empleados (id_empleado,cedula,nombre, apellido,cargo, sexo, fecha_nacimiento, direccion, ciudad, nombre_usuario, password, rol) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+                cur.execute(sql, [cedula, cedula, nombre, apellido, cargo, sexo,
+                            nacimiento, direccion, ciudad, nombre_usuario, hash, "interno"])
+                conexion.commit()
+                cur.close()
+                return render_template("dashboardRegistrarUsuarioInterno.html")
+            except Error as err:
+                print(err)
 
-    return render_template('dashboardRegistrarUsuarioInterno.html')
+        return render_template('dashboardRegistrarUsuarioInterno.html')
+    else:
+        return "Por favor inicie sesion"
 
 
 @app.route('/dashboardRegistrosUsuariosInternos', methods=['GET'])
 def dashboardRegistrosUsuariosInternos():
-    try:
-        conexion = conexionBaseDeDatos()
-        cur = conexion.cursor()
-        sql = "SELECT * FROM tb_empleados"
-        cur.execute(sql)
-        conexion.commit()
-        registrosUsuariosInternos = cur.fetchall()
-        cur.close()
-        print(registrosUsuariosInternos)
-        return render_template('dashboardRegistrosUsuariosInternos.html', registrosUsuariosInternos=registrosUsuariosInternos)
-    except Error:
-        print(Error)
-
+    if "usuario" in session:
+        try:
+            conexion = conexionBaseDeDatos()
+            cur = conexion.cursor()
+            sql = "SELECT * FROM tb_empleados"
+            cur.execute(sql)
+            conexion.commit()
+            registrosUsuariosInternos = cur.fetchall()
+            cur.close()
+            print(registrosUsuariosInternos)
+            return render_template('dashboardRegistrosUsuariosInternos.html', registrosUsuariosInternos=registrosUsuariosInternos)
+        except Error:
+            print(Error)
+    else:
+        return "Por favor inicie sesion"
 
 @app.route('/producto/<string:id>', methods=['POST', 'GET'])
 def producto(id=None):

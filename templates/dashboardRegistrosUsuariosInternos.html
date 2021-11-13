@@ -63,8 +63,8 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <span data-feather="file-text">{{url_for('dashboardRegistrosUsuariosInternos')}}</span>
+                            <a class="nav-link" href="{{url_for('dashboardRegistrosUsuariosInternos')}}">
+                                <span data-feather="file-text"></span>
                                 ver registros de usuarios internos
                             </a>
                         </li>
@@ -112,9 +112,22 @@
                             </tr>
                         </thead>
                         <tbody>
+                            {% for r in registrosUsuariosInternos %}
                             <tr>
-                                <td></td>
+                                <td>{{r[0]}}</td>
+                                <td>{{r[1]}}</td>
+                                <td>{{r[2]}}</td>
+                                <td>{{r[3]}}</td>
+                                <td>{{r[4]}}</td>
+                                <td>{{r[5]}}</td>
+                                <td>{{r[6]}}</td>
+                                <td>{{r[7]}}</td>
+                                <td>{{r[8]}}</td>
+                                <td>{{r[9]}}</td>
+                                <td>{{r[10]}}</td>
+                                <td>{{r[11]}}</td>
                             </tr>
+                            {% endfor %}
                         </tbody>
                     </table>
                 </div>

@@ -70,7 +70,42 @@ def login():
 
 @app.route("/loginUsuarioInterno", methods=["GET", "POST"])
 def loginUsuarioInterno():
+    if request.method == "POST":
+        usuario = escape(request.form["usuario"])
+        password = escape(request.form["contra"])
+        print(usuario)
+        print(password)
+        try:
+            with sqlite3.connect(ruta_db) as con:
+                cur = con.cursor()
+                cur.execute(
+                    "SELECT rol FROM tb_empleados WHERE nombre_usuario=?", [usuario])
+                rol1 = cur.fetchone()
+                rol=rol1[0]
+                print(rol)
+                cur = con.cursor()
+                cur.execute(
+                    "SELECT password FROM tb_empleados WHERE nombre_usuario=?", [usuario])
+                row = cur.fetchone()
+                print(row)
+                
+                if row is None:
+                    return "Usuario no se encuentra en la base de datos"
+                else:
+                    if check_password_hash(row[0], password):
+                        session["usuario"] = usuario
+                        session["rol"]=rol
+                        print(session["rol"])
+                        print(rol)
+
+                        return render_template("index.html",rol=rol,inicio=1)
+                    else:
+                        return "Contraseña incorrecta"
+        except Error:
+            print(Error)
     return render_template("loginUsuarioInterno.html")
+
+    
 
 
 @app.route("/loginSuperAdministrador", methods=["GET", "POST"])

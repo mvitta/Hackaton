@@ -32,7 +32,9 @@
 
                 {% if inicio!=1 %}  
                 </ul><span class="navbar-text actions"> <a class="login" href="{{url_for('login')}}">Iniciar
-                        Sesión</a></span>
+                        Sesión Comprador</a></span>
+                </ul><span class="navbar-text actions"> <a class="login" href="/loginUsuarioInterno">Iniciar
+                        Sesión Trabajador</a></span>
                 <span class="navbar-text actions"><a class="btn btn-light action-button" role="button"
                         href="{{url_for('registro')}}">Registro</a></span>
                 {% else %}

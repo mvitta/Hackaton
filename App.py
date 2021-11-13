@@ -14,7 +14,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 ruta_index = "index.html"
 ruta_productos = "productos.html"
-ruta_login="login.html"
+ruta_login = "login.html"
 ruta_db = "orion1_db.db"
 
 
@@ -33,22 +33,24 @@ def conexionBaseDeDatos():
 def index():
     return render_template(ruta_login)
 
-@app.route("/login",methods=["GET","POST"])
+
+@app.route("/login", methods=["GET", "POST"])
 def login():
-    if request.method=="POST":
-        correo=escape(request.form["usuario"])
-        password=escape(request.form["contra"])
+    if request.method == "POST":
+        correo = escape(request.form["usuario"])
+        password = escape(request.form["contra"])
         try:
-            with sqlite3.connect(ruta_db) as con: 
-                cur=con.cursor()
-                cur.execute("SELECT password FROM tb_users WHERE correo=?",[correo])
+            with sqlite3.connect(ruta_db) as con:
+                cur = con.cursor()
+                cur.execute(
+                    "SELECT password FROM tb_users WHERE correo=?", [correo])
                 row = cur.fetchone()
                 if row is None:
                     return "Usuario no se encuentra en la base de datos"
                 else:
-                    if check_password_hash(row[0],password):
-                        session["usuario"]=correo
-                    
+                    if check_password_hash(row[0], password):
+                        session["usuario"] = correo
+
                         return render_template("index.html")
                     else:
                         return render_template(ruta_login)
@@ -56,6 +58,15 @@ def login():
             print(Error)
     return render_template(ruta_login)
 
+
+@app.route("/loginUsuarioInterno", methods=["GET", "POST"])
+def loginUsuarioInterno():
+    return render_template("loginUsuarioInterno.html")
+
+
+@app.route("/loginSuperAdministrador", methods=["GET", "POST"])
+def loginSuperAdministrador():
+    return render_template("loginSuperAdministrador.html")
 
 
 @app.route('/registro', methods=['POST', 'GET'])
@@ -65,12 +76,12 @@ def registro():
         correo = escape(request.form.get('Correo'))
         sexo = escape(request.form.get('flexRadioDefault'))
         nacimiento = escape(request.form.get('fecha'))
-        direccion =escape( request.form.get('direccion'))
+        direccion = escape(request.form.get('direccion'))
         ciudad = escape(request.form.get('ciudad'))
         nombre_usuario = escape(request.form.get('nombreUsuario'))
         password = escape(request.form.get('Contra'))
-        hash=generate_password_hash(password)
-        apellido =escape(request.form.get('Apellido'))
+        hash = generate_password_hash(password)
+        apellido = escape(request.form.get('Apellido'))
         cedula = escape(request.form.get('Cedula'))
         try:
             conexion = conexionBaseDeDatos()
@@ -112,7 +123,7 @@ def dashboardLotes():
         conexion.commit()
         registrosLotesProductos = cur.fetchall()
         cur.close()
-        return render_template('dashboardLotes.html', registrosLotesProductos= registrosLotesProductos)
+        return render_template('dashboardLotes.html', registrosLotesProductos=registrosLotesProductos)
     except Error:
         print(Error)
         return render_template("error !!!  :| ")
@@ -152,19 +163,20 @@ def dashboardRegistrarUsuarioInterno():
         sexo = escape(request.form.get('flexRadioDefault'))
         nacimiento = escape(request.form.get('fecha'))
         cargo = escape(request.form.get('cargo'))
-        direccion =escape( request.form.get('direccion'))
+        direccion = escape(request.form.get('direccion'))
         ciudad = escape(request.form.get('ciudad'))
         nombre_usuario = escape(request.form.get('nombreUsuario'))
         password = escape(request.form.get('Contra'))
-        hash=generate_password_hash(password)
-        apellido =escape(request.form.get('Apellido'))
+        hash = generate_password_hash(password)
+        apellido = escape(request.form.get('Apellido'))
         cedula = escape(request.form.get('Cedula'))
-        
+
         try:
             conexion = conexionBaseDeDatos()
             cur = conexion.cursor()
             sql = "INSERT INTO tb_empleados (id_empleado,cedula,nombre, apellido,cargo, sexo, fecha_nacimiento, direccion, ciudad, nombre_usuario, password, rol) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
-            cur.execute(sql,[cedula,cedula,nombre,apellido,cargo,sexo,nacimiento,direccion,ciudad,nombre_usuario,hash,"interno"])
+            cur.execute(sql, [cedula, cedula, nombre, apellido, cargo, sexo,
+                        nacimiento, direccion, ciudad, nombre_usuario, hash, "interno"])
             conexion.commit()
             cur.close()
             return render_template("dashboardRegistrarUsuarioInterno.html")

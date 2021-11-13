@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename= 'css/styleLoginRegistro.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename= 'css/styleProducto.css') }}">
     <link href="{{ url_for('static', filename='dashboard/css/dashboard.css') }}" rel="stylesheet">
+
 </head>
 
 <body>
@@ -39,6 +40,7 @@
                         href="{{url_for('registro')}}">Registro</a></span>
                 {% else %}
                 <li class="nav-item"><a class="nav-link" href="/perfil/{{id}}">Perfil</a></li>
+                <li class="nav-item"><a class="nav-link" href="/cart">Carrito</a></li>
                 </ul><span class="navbar-text actions"> <a class="login" href="{{url_for('logout')}}">Cerrar
                 Sesión</a></span>
                 {%endif%}

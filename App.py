@@ -31,6 +31,45 @@ def conexionBaseDeDatos():
         db = g._database_USUARIO = sqlite3.connect(ruta_db)
     return db
 
+def handle_cart():
+    products = []
+    grand_total = 0
+    index = 0
+    quantity_total = 0
+    print(1)
+    print(session["cart"])
+    for item in session['cart']:
+        print(2)
+        try:
+            with sqlite3.connect(ruta_db) as con:
+                con.row_factory = sqlite3.Row  # Convierte la respuesta de la BD en un diccionario
+                cur = con.cursor()
+                print(item["id"])
+                cur.execute(
+                    "SELECT * FROM tb_productos WHERE id_producto=?", [item["id"]])
+                product = cur.fetchone()
+                print("producto")
+                print(product)
+        except:
+            print("error")
+        quantity = int(item['cantidad'])
+        total = quantity * product["precio_unidad"]
+        grand_total += total
+
+        quantity_total += quantity
+        print(3)
+
+        products.append({'id': product["id_producto"], 'nombre': product["nombre_producto"], 'precio':  product["precio_unidad"],
+                         'imagen': product["imagen"], 'cantidad': quantity, 'total': total, 'index': index})
+        index += 1
+        print(4)
+        
+
+    
+
+    return products, grand_total, quantity_total
+
+
 
 @app.route('/', methods=['POST', 'GET'])
 def index():
@@ -64,6 +103,7 @@ def login():
                     if check_password_hash(row[0], password):
                         session["usuario"] = correo
                         session["rol"] = "comprador"
+                        session["cart"]=[]
 
                         return redirect("/")
                     else:
@@ -449,6 +489,36 @@ def perfil(id=id):
             print(Error)
     return "Debe iniciar sesion"
 
+@app.route("/cart",methods=["GET","POST"])
+def cart():
+    products, grand_total, quantity_total = handle_cart()
 
+    return render_template("cart.html",products=products,grand_total=grand_total,quantity_total=quantity_total)
+
+@app.route("/addToCart/<string:id_producto>",methods=["GET","POST"])
+def addToCart(id_producto=None):
+    if "usuario" in session:
+        cantidad=request.form.get("cantidad")
+        print(cantidad)
+        print(type(cantidad))
+        if cantidad=="0":
+            return "Seleccione un valor mayor a 0"
+        carrito=session["cart"]
+        carrito.append({"id":id_producto,"cantidad":cantidad})
+        session["cart"]=carrito
+       
+        return redirect("/productos")
+    else:
+        return "Debe iniciar sesion"
+
+@app.route("/remove_from_cart/<string:index>",methods=["GET","POST"])
+def remove_from_cart(index):
+    del session['cart'][int(index)]
+    session.modified = True
+    return redirect(url_for("cart"))
+
+@app.route("/checkout",methods=["GET","POST"])
+def checkout():
+    return render_template(ruta_index)
 if __name__ == "__main__":
     app.run(debug=True, port=8000)

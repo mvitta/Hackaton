@@ -22,8 +22,9 @@
             <div style="margin-top: 10px;">{{row_producto.precio_unidad}}</div>
             <label for="" class="form-label">Puntuacion</label>
             <div style="margin-top: 10px;">{{row_producto.calificacion_producto}}</div>
+            <form action="/comprar/{{row_producto.id_producto}}" method="POST" id="formulario">
             <div class="form-floating" style="margin-top: 10px;">
-                <select class="form-select" id="floatingSelect" aria-label="Floating label select example">
+                <select class="form-select" id="floatingSelect" name="cantidad" aria-label="Floating label select example">
                     <option selected>0</option>
                     <option value="1">1</option>
                     <option value="2">2</option>
@@ -35,9 +36,10 @@
                 <label for="floatingSelect">Unidades a Comprar</label>
             </div>
             <div class="d-grid gap-2" style="margin-top: 10px;">
-                <button class="btn btn-primary" type="button">Comprar</button>
-                <button class="btn btn-primary" type="button">Agregar al carrito</button>
+                
+                <button class="btn btn-primary" type="submit" onmouseover="addToCart()">Agregar al carrito</button>
             </div>
+            </form>
             <div style="margin-top: 10px;">
                 <img src="/static/fonts/secure-shopping.png" alt="">
                 <label style="color: rgba(0, 0, 0, 0.432);" for="floatingSelect">Compra protegida</label>
@@ -103,4 +105,10 @@
         </div>
     </div>
 </div>
+
+<script type="text/javascript">
+    function addToCart() {
+        document.getElementById("formulario").action="/addToCart/{{row_producto.id_producto}}";
+    }
+</script>
 {% endblock %}

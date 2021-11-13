@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+<div class="row">
+	<div class="col-lg-8">
+		<h3 class="bold">
+			<i class="glyphicon glyphicon-shopping-cart"></i> Tu carrito de compras
+		</h3>
+
+		<div class="panel panel-primary">
+			<div class="panel-body container">
+				{% for product in products %}
+				<div class="row">
+					<div class="col-4">
+						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+							<div class="thumbnail thumbnail-q">
+								<img style="width: 50%;" src="data:image/png;base64,{{ product.imagen }}" alt="">
+							</div>
+						</div>
+					</div>
+					<div class="col-4">
+						<h3 class="bold">{{ product['nombre'] }}</h3>
+						<p>&dollar;{{ product['precio'] }}</p>
+						<br />
+						<p>
+							<a href="/remove_from_cart/{{product['index']}}">
+							<button type="button" class="btn btn-danger btn-xs">
+								<i class="glyphicon glyphicon-trash"></i>
+							</button></a>
+						</p>
+					</div>
+					<div class="col-lg-2">
+						<h3>Cantidad</h3>
+						<p>
+							{{ product['cantidad'] }}
+						</p>
+					</div>
+					<div class="col-lg-2">
+						<h3>Total</h3>
+						<p>
+							<strong>&dollar;{{ product['total'] }}</strong>
+						</p>
+					</div>
+				</div>
+				{% endfor %}
+			</div>
+		</div>
+	</div>
+
+	<div class="col-lg-4">
+		<h3 class="bold">
+			<i class="glyphicon glyphicon-th-list"></i> Resumen
+		</h3>
+
+		<div class="panel panel-primary">
+			<div class="panel-body">
+				Valor actual del carrito
+			</div>
+			<ul class="list-group">
+			
+				<li class="list-group-item">
+					<p>Total <strong class="pull-right">&dollar;{{ grand_total }}</strong></p>
+				</li>
+			</ul>
+			<div class="panel-footer">
+				{%if quantity_total>0%}
+				<a href="{{ url_for('checkout') }}" class="btn btn-primary btn-sm">
+					Pagar <i class="glyphicon glyphicon-chevron-right"></i>
+				</a>
+				{%else%}
+				<a href="#" class="btn btn-primary btn-sm">
+					Pagar <i class="glyphicon glyphicon-chevron-right"></i>
+				</a>
+				{%endif%}
+			
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

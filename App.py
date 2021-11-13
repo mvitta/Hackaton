@@ -12,6 +12,7 @@ from werkzeug.exceptions import UnsupportedMediaType
 from werkzeug.security import generate_password_hash, check_password_hash
 
 
+compExitosa = "compraExitosa.html"
 ruta_index = "index.html"
 ruta_productos = "productos.html"
 ruta_login = "login.html"
@@ -410,6 +411,15 @@ def logout():
         return render_template(ruta_index, inicio=0)
     else:
         return "No hay sesion activa"
+
+
+@app.route("/compraExitosa")
+def compraExitosa():
+    # if "usuario" in session:
+    #     session.pop("usuario", None)
+    return render_template(compExitosa)
+    # else:
+    #     return "No hay sesion activa"
 
 
 if __name__ == "__main__":

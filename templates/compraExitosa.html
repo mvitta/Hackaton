@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div style="display : flex;
+justify-content : center;
+align-items : center;">
+    <div style="margin-top: 40px;">
+        <img src="/static/fonts/compraExitosa.png" alt="">
+    </div>
+</div>
+<div style="text-align: center;">
+    <h4 class="card-title">Compra Exitosa</h4>
+</div>
+<div style="text-align: center;">
+    <a class="nav-link" href="{{url_for('productos')}}">
+        <span data-feather="file-text"></span>
+        Regresar a compras
+    </a>
+</div>
+{% endblock %}

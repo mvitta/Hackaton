@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="{{ url_for('static', filename='dashboard/css/bootstrap.min.css') }}" rel="stylesheet">
+  <link href="{{ url_for('static', filename='dashboard/css/dashboard.css') }}" rel="stylesheet">
+  <title>Agregar productos</title>
+</head>
+
+<body>
+  <!--Cuerpo-->
+  <div class="container-fluid">
+    <div class="row">
+      <!--Sidebar-->
+      <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+        <div class="position-sticky pt-3">
+          <ul class="nav flex-column">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="#">
+                <span data-feather="user-check"></span>
+                Perfil
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{url_for('dashboardProductos')}}">
+                <span data-feather="gift"></span>
+                Productos
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{url_for('dashboardCrearProducto')}}">
+                <span data-feather="gift"></span>
+                Agregar productos
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{url_for('dashboardLotes')}}">
+                <span data-feather="archive"></span>
+                Lotes
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{url_for('dashboardProductosVendidos')}}">
+                <span data-feather="bar-chart-2"></span>
+                Productos vendidos
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{url_for('dashboardUsuariosRegistrados')}}">
+                <span data-feather="bar-chart-2"></span>
+                Usuarios Registrados
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{url_for('dashboardComentariosUsuarios')}}">
+                <span data-feather="layers"></span>
+                Comentarios
+              </a>
+            </li>
+          </ul>
+          <ul class="nav flex-column mb-2">
+            <li class="nav-item">
+              <a class="nav-link" href="{{url_for('dashboardRegistrarUsuarioInterno')}}">
+                <span data-feather="thumbs-up"></span>
+                registrar usuario interno
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{url_for('dashboardRegistrosUsuariosInternos')}}">
+                <span data-feather="file-text"></span>
+                ver registros de usuarios internos
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">
+                <span data-feather="file-text"></span>
+                Opción 8
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">
+                <span data-feather="file-text"></span>
+                Opción 9
+              </a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+
+      <!--Fin del Sidebar-->
+
+      <!-- Cuerpo -->
+      <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+        {% extends "base.html" %}
+        {% block content %}
+        <div
+          class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+          <h1 class="h2">Agregar productos</h1>
+        </div>
+        <div class="my-4 w-100 justify-content-between flex-wrap flex-md-nowrap align-items-center">
+          <!--Inicio Formulario Productos-->
+          <div class="container">
+            <form method="post">
+              <div class="mb-3">
+                <label for="nombreProducto">Nombre Producto</label>
+                <input type="text" class="form-control form-control-sm" id="nombreProducto" name="nombreProducto" >
+              </div>
+              <div class="mb-3">
+                <label for="tipoUnidad">Categoria</label>
+                <select class="form-control form-control-sm" id="categoria" name="categoria" >
+                  <option selected></option>
+                  <option>Baja</option>
+                  <option>Media</option>
+                  <option>Alta</option>
+                </select>
+              </div>
+              <div class="input-group">
+                <span class="input-group-text">Descripcion</span>
+                <textarea class="form-control" aria-label="With textarea" name="areaTexto" ></textarea>
+              </div>
+              <div class="mb-3" style="margin-top: 5px;">
+                <label for="tipoUnidad">Tipo de unidad</label>
+                <select class="form-control form-control-sm" id="tipoUnidad" name="tipoUnidad" >
+                  <option selected></option>
+                  <option>Caja</option>
+                  <option>Pote de vidrio</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label for="precioProducto">Precio Producto</label>
+                <input type="number" class="form-control form-control-sm" id="precioProducto" name="precioProducto" >
+              </div>
+              <div class="mb-3">
+                <label for="precioProducto">Unidades</label>
+                <input type="number" class="form-control form-control-sm" id="unidades" name="unidades" >
+              </div>
+              <div class="mb-3">
+                <label for="tipoUnidad">Porcentaje Promod</label>
+                <select class="form-control form-control-sm" id="procentajePromo" name="procentajePromo" >
+                  <option selected>0</option>
+                  <option>2%</option>
+                  <option>3%</option>
+                  <option>5%</option>
+                  <option>6%</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label for="precioProducto">Valor de venta</label>
+                <input type="number" class="form-control form-control-sm" id="valorVenta" name="valorVenta" >
+              </div>
+              <div class="mb-3">
+                <label for="porcentajePromocion">¿Se aplica bono de descuento?</label>
+                <fieldset class="form-group">
+                  <div class="row">
+                    <div class="col-sm-10">
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="bonoDescuento" id="bonoDescuento" value="si">
+                        <label class="form-check-label" for="gridRadios1">
+                          Si
+                        </label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="bonoDescuento" id="bonoDescuento" value="no">
+                        <label class="form-check-label" for="gridRadios2">
+                          No
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </fieldset>
+              </div>
+
+              <input type="file" name="imagen" style="margin-bottom: 15px;">
+
+              <div class="mb-3">
+                <label for="cantidadEstandar">Total de unidades</label>
+                <input type="number" class="form-control form-control-sm" id="totalUnidades" name="totalUnidades" >
+              </div>
+              <div class="form-group">
+                <div class="col-sm-10">
+                  <button id="registrarProducto" type="submit" class="btn btn-primary">Registrar Producto</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+        <!--Fin del Formulario-->
+    </div>
+    {% endblock %}
+    </main>
+  </div>
+  </div>
+  <!--Pie de pagina-->
+  <footer class="d-flex sticky-top bg-dark flex-md-nowrap justify-content-between align-items-center p-0 py-3 shadow">
+    <div class="container">
+      <div class="row justify-content-center">
+        <p class="col-md-4 mb-0 text-muted">&copy; 2021 Orion, Hackaton-2021</p>
+      </div>
+    </div>
+  </footer>
+  <!--Fin pie de pagina-->
+  <script src="js/bootstrap.bundle.min.js"></script>
+  <script src="js/feather.min.js"></script>
+  <script src="js/Chart.min.js"></script>
+  <script src="js/dashboard.js"></script>
+</body>
+
+</html>

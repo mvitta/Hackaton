@@ -13,7 +13,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 
 compExitosa = "compraExitosa.html"
-ruta_perfil="perfil.html"
+ruta_perfil = "perfil.html"
 ruta_index = "index.html"
 ruta_productos = "productos.html"
 ruta_login = "login.html"
@@ -76,14 +76,14 @@ def index():
     if "usuario" in session:
         inicio = 1
         rol = session["rol"]
-        id=session["usuario"]
-        
+        id = session["usuario"]
+
     else:
         inicio = 0
         rol = 0
-        id=0
+        id = 0
 
-    return render_template(ruta_index, inicio=inicio, rol=rol,id=id)
+    return render_template(ruta_index, inicio=inicio, rol=rol, id=id)
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -184,9 +184,10 @@ def registro():
     return render_template('registro.html')
 
 
-@app.route('/dashboarProductos')
+@app.route('/dashboarProductos', methods=['POST', 'GET'])
 def dashboardProductos():
     if "usuario" in session:
+        registrosProductos = None
         try:
             conexion = conexionBaseDeDatos()
             cur = conexion.cursor()
@@ -195,6 +196,65 @@ def dashboardProductos():
             conexion.commit()
             registrosProductos = cur.fetchall()
             cur.close()
+            # mostrar por consola para ver el comportamiento
+            for registro in registrosProductos:
+                r = list(registro)
+                r.pop(len(r) - 2)
+
+                print(r)
+
+            print(len(registrosProductos))
+            if request.method == 'POST':
+                if request.form.get('ordenarVentas') == 'ordenar por mayor ventas':
+                    conexion = conexionBaseDeDatos()
+                    cur = conexion.cursor()
+                    sql = "SELECT * FROM tb_productos ORDER BY unidades_vendidas DESC"
+                    cur.execute(sql)
+                    conexion.commit()
+                    registrosOrdenadosPorVentas = cur.fetchall()
+                    cur.close()
+                    return render_template("dashboardProducto.html", registrosProductos=registrosOrdenadosPorVentas)
+
+                if request.form.get('ordenarExistentes') == 'ordenar cantidades existentes':
+                    conexion = conexionBaseDeDatos()
+                    cur = conexion.cursor()
+                    sql = "SELECT * FROM tb_productos ORDER BY total_unidades ASC"
+                    cur.execute(sql)
+                    conexion.commit()
+                    registrosOrdenadosPorExistentes = cur.fetchall()
+                    cur.close()
+                    return render_template("dashboardProducto.html", registrosProductos=registrosOrdenadosPorExistentes)
+
+                if request.form.get('filtrarCategoriaBaja') == 'filtrar por categoria baja':
+                    conexion = conexionBaseDeDatos()
+                    cur = conexion.cursor()
+                    sql = "SELECT * FROM tb_productos WHERE categoria=?"
+                    cur.execute(sql, ['Baja'])
+                    conexion.commit()
+                    registrosCategoriaBaja = cur.fetchall()
+                    cur.close()
+                    return render_template("dashboardProducto.html", registrosProductos=registrosCategoriaBaja)
+
+                if request.form.get('filtrarCategoriaMedia') == 'filtrar por categoria media':
+                    conexion = conexionBaseDeDatos()
+                    cur = conexion.cursor()
+                    sql = "SELECT * FROM tb_productos WHERE categoria=?"
+                    cur.execute(sql, ['Media'])
+                    conexion.commit()
+                    registrosCategoriaMedia = cur.fetchall()
+                    cur.close()
+                    return render_template("dashboardProducto.html", registrosProductos=registrosCategoriaMedia)
+
+                if request.form.get('filtrarCategoriaAlta') == 'filtrar por categoria alta':
+                    conexion = conexionBaseDeDatos()
+                    cur = conexion.cursor()
+                    sql = "SELECT * FROM tb_productos WHERE categoria=?"
+                    cur.execute(sql, ['Alta'])
+                    conexion.commit()
+                    registrosCategoriaAlta = cur.fetchall()
+                    cur.close()
+                    return render_template("dashboardProducto.html", registrosProductos=registrosCategoriaAlta)
+
             return render_template("dashboardProducto.html", registrosProductos=registrosProductos)
         except Error:
             print(Error)
@@ -355,11 +415,11 @@ def producto(id_producto=None):
     if "usuario" in session:
         inicio = 1
         rol = session["rol"]
-        id=session["usuario"]
+        id = session["usuario"]
     else:
         inicio = 0
         rol = 0
-        id=0
+        id = 0
     try:
         with sqlite3.connect(ruta_db) as con:
             con.row_factory = sqlite3.Row  # Convierte la respuesta de la BD en un diccionario
@@ -375,10 +435,10 @@ def producto(id_producto=None):
             print(row_producto)
             print(row_comentarios)
 
-            return render_template('baseProducto.html', row_producto=row_producto, row_comentarios=row_comentarios, inicio=inicio, rol=rol,id=id)
+            return render_template('baseProducto.html', row_producto=row_producto, row_comentarios=row_comentarios, inicio=inicio, rol=rol, id=id)
     except Error:
         print(Error)
-        return render_template(ruta_productos, inicio=inicio, rol=rol,id=id)
+        return render_template(ruta_productos, inicio=inicio, rol=rol, id=id)
 
 
 @app.route("/productos")
@@ -386,11 +446,11 @@ def productos():
     if "usuario" in session:
         inicio = 1
         rol = session["rol"]
-        id=session["usuario"]
+        id = session["usuario"]
     else:
         inicio = 0
         rol = 0
-        id=0
+        id = 0
     try:
         with sqlite3.connect(ruta_db) as con:
             con.row_factory = sqlite3.Row  # Convierte la respuesta de la BD en un diccionario
@@ -398,10 +458,10 @@ def productos():
             cur.execute("SELECT * FROM tb_productos")
             row_productos = cur.fetchall()
 
-            return render_template(ruta_productos, row_productos=row_productos, inicio=inicio, rol=rol,id=id)
+            return render_template(ruta_productos, row_productos=row_productos, inicio=inicio, rol=rol, id=id)
     except Error:
         print(Error)
-        return render_template(ruta_productos, inicio=inicio, rol=rol,id=id)
+        return render_template(ruta_productos, inicio=inicio, rol=rol, id=id)
 
 
 @app.route("/comentar/<string:id>", methods=["GET", "POST"])
@@ -470,21 +530,23 @@ def compraExitosa():
     # else:
     #     return "No hay sesion activa"
 
-@app.route("/perfil/<string:id>", methods=["GET","POST"])
+
+@app.route("/perfil/<string:id>", methods=["GET", "POST"])
 def perfil(id=id):
     if "usuario" in session:
         try:
-            with sqlite3.connect(ruta_db) as con: 
-                con.row_factory = sqlite3.Row #Convierte la respuesta de la BD en un diccionario
+            with sqlite3.connect(ruta_db) as con:
+                con.row_factory = sqlite3.Row  # Convierte la respuesta de la BD en un diccionario
                 cur = con.cursor()
-                cur.execute("SELECT * FROM tb_users WHERE correo=?",[id])
+                cur.execute("SELECT * FROM tb_users WHERE correo=?", [id])
                 row_perfil = cur.fetchone()
-                rol=session["rol"]
-                con.row_factory = sqlite3.Row #Convierte la respuesta de la BD en un diccionario
+                rol = session["rol"]
+                con.row_factory = sqlite3.Row  # Convierte la respuesta de la BD en un diccionario
                 cur = con.cursor()
-                cur.execute("SELECT * FROM tb_comentario WHERE usuario=?",[session["usuario"]])
+                cur.execute(
+                    "SELECT * FROM tb_comentario WHERE usuario=?", [session["usuario"]])
                 row_comentarios = cur.fetchall()
-                return render_template(ruta_perfil,row_usuario=row_perfil,rol=rol,row_comentarios=row_comentarios,inicio=1,id=session["usuario"])
+                return render_template(ruta_perfil, row_usuario=row_perfil, rol=rol, row_comentarios=row_comentarios, inicio=1, id=session["usuario"])
         except Error:
             print(Error)
     return "Debe iniciar sesion"

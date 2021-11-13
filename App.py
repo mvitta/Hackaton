@@ -160,28 +160,30 @@ def dashboardProductos():
 
 @app.route('/dashboardCrearProducto',  methods=['POST', 'GET'])
 def dashboardCrearProducto():
-    # if "usuario" in session:
-    if request.method == "POST":
-        valores = []
-        names = ['nombreProducto', 'categoria', 'areaTexto',
-                 'tipoUnidad', 'precioProducto', 'unidades', 'procentajePromo', 'valorVenta', 'bonoDescuento', 'totalUnidades']
-        for i in names:
-            valores.append(request.form.get(i))
-            print(valores)
-        try:
-            conexion = conexionBaseDeDatos()
-            cur = conexion.cursor()
-            sql = "INSERT INTO tb_productos (nombre_producto, categoria, descripcion, tipo_unidad, precio_unidad, unidades_vendidas, porcentaje_promo, valor_ventas, bono_descuento, calificacion_producto, imagen, total_unidades) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
-            cur.execute(sql, [valores[0], valores[1], valores[2], valores[3], valores[4], valores[5], valores[6],
-                        valores[7], valores[8], 0.0, "la imagen", valores[9]])
-            conexion.commit()
-            cur.close()
-            return render_template("dashboardCrearProducto.html")
-        except Error as err:
-            print(err)
+    if "usuario" in session:
+        if request.method == "POST":
+            valores = []
+            names = ['nombreProducto', 'categoria', 'areaTexto',
+                     'tipoUnidad', 'precioProducto', 'unidades', 'procentajePromo', 'valorVenta', 'bonoDescuento', 'totalUnidades']
+            for i in names:
+                valores.append(request.form.get(i))
 
-    # else:
-    #     return "Por favor inicie sesion"
+            imagen = request.files["imagen"]
+            imagenBinario = base64.b64encode(imagen.read())
+            imagenBinario_ = imagenBinario.decode("utf-8")
+            try:
+                conexion = conexionBaseDeDatos()
+                cur = conexion.cursor()
+                sql = "INSERT INTO tb_productos (nombre_producto, categoria, descripcion, tipo_unidad, precio_unidad, unidades_vendidas, porcentaje_promo, valor_ventas, bono_descuento, calificacion_producto, imagen, total_unidades) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+                cur.execute(sql, [valores[0], valores[1], valores[2], valores[3], valores[4], valores[5], valores[6],
+                            valores[7], valores[8], 0, imagenBinario_, valores[9]])
+                conexion.commit()
+                cur.close()
+                return render_template("dashboardCrearProducto.html")
+            except Error as err:
+                print(err)
+    else:
+        return "Por favor inicie sesion"
     return render_template("dashboardCrearProducto.html")
 
 

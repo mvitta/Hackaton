@@ -13,6 +13,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 
 compExitosa = "compraExitosa.html"
+ruta_perfil="perfil.html"
 ruta_index = "index.html"
 ruta_productos = "productos.html"
 ruta_login = "login.html"
@@ -36,11 +37,14 @@ def index():
     if "usuario" in session:
         inicio = 1
         rol = session["rol"]
+        id=session["usuario"]
+        
     else:
         inicio = 0
         rol = 0
+        id=0
 
-    return render_template(ruta_index, inicio=inicio, rol=rol)
+    return render_template(ruta_index, inicio=inicio, rol=rol,id=id)
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -306,32 +310,35 @@ def dashboardRegistrosUsuariosInternos():
         return "Por favor inicie sesion"
 
 
-@app.route('/producto/<string:id>', methods=['POST', 'GET'])
-def producto(id=None):
+@app.route('/producto/<string:id_producto>', methods=['POST', 'GET'])
+def producto(id_producto=None):
     if "usuario" in session:
         inicio = 1
         rol = session["rol"]
+        id=session["usuario"]
     else:
         inicio = 0
         rol = 0
+        id=0
     try:
         with sqlite3.connect(ruta_db) as con:
             con.row_factory = sqlite3.Row  # Convierte la respuesta de la BD en un diccionario
             cur = con.cursor()
             cur.execute(
-                "SELECT * FROM tb_productos WHERE id_producto=?", [id])
+                "SELECT * FROM tb_productos WHERE id_producto=?", [id_producto])
             row_producto = cur.fetchone()
             con.row_factory = sqlite3.Row
             cur = con.cursor()
             cur.execute(
-                "SELECT * FROM tb_comentario WHERE id_producto=?", [id])
-            print("si lo hizo")
+                "SELECT * FROM tb_comentario WHERE id_producto=?", [id_producto])
             row_comentarios = cur.fetchall()
+            print(row_producto)
+            print(row_comentarios)
 
-            return render_template('baseProducto.html', row_producto=row_producto, row_comentarios=row_comentarios, inicio=inicio, rol=rol)
+            return render_template('baseProducto.html', row_producto=row_producto, row_comentarios=row_comentarios, inicio=inicio, rol=rol,id=id)
     except Error:
         print(Error)
-        return render_template(ruta_productos, inicio=inicio, rol=rol)
+        return render_template(ruta_productos, inicio=inicio, rol=rol,id=id)
 
 
 @app.route("/productos")
@@ -339,9 +346,11 @@ def productos():
     if "usuario" in session:
         inicio = 1
         rol = session["rol"]
+        id=session["usuario"]
     else:
         inicio = 0
         rol = 0
+        id=0
     try:
         with sqlite3.connect(ruta_db) as con:
             con.row_factory = sqlite3.Row  # Convierte la respuesta de la BD en un diccionario
@@ -349,10 +358,10 @@ def productos():
             cur.execute("SELECT * FROM tb_productos")
             row_productos = cur.fetchall()
 
-            return render_template(ruta_productos, row_productos=row_productos, inicio=inicio, rol=rol)
+            return render_template(ruta_productos, row_productos=row_productos, inicio=inicio, rol=rol,id=id)
     except Error:
         print(Error)
-        return render_template(ruta_productos, inicio=inicio, rol=rol)
+        return render_template(ruta_productos, inicio=inicio, rol=rol,id=id)
 
 
 @app.route("/comentar/<string:id>", methods=["GET", "POST"])
@@ -396,7 +405,7 @@ def comentar(id=None):
                         "SELECT * FROM tb_productos WHERE id_producto=?", [id])
                     print("si lo hizo")
                     row_producto = cur.fetchone()
-                    return render_template(ruta_producto, row_producto=row_producto, row_comentarios=row_comentarios, inicio=inicio)
+                    return render_template(ruta_producto, row_producto=row_producto, row_comentarios=row_comentarios, inicio=inicio, id=session["usuario"])
             except Error:
                 print(Error)
         else:
@@ -420,6 +429,25 @@ def compraExitosa():
     return render_template(compExitosa)
     # else:
     #     return "No hay sesion activa"
+
+@app.route("/perfil/<string:id>", methods=["GET","POST"])
+def perfil(id=id):
+    if "usuario" in session:
+        try:
+            with sqlite3.connect(ruta_db) as con: 
+                con.row_factory = sqlite3.Row #Convierte la respuesta de la BD en un diccionario
+                cur = con.cursor()
+                cur.execute("SELECT * FROM tb_users WHERE correo=?",[id])
+                row_perfil = cur.fetchone()
+                rol=session["rol"]
+                con.row_factory = sqlite3.Row #Convierte la respuesta de la BD en un diccionario
+                cur = con.cursor()
+                cur.execute("SELECT * FROM tb_comentario WHERE usuario=?",[session["usuario"]])
+                row_comentarios = cur.fetchall()
+                return render_template(ruta_perfil,row_usuario=row_perfil,rol=rol,row_comentarios=row_comentarios,inicio=1,id=session["usuario"])
+        except Error:
+            print(Error)
+    return "Debe iniciar sesion"
 
 
 if __name__ == "__main__":

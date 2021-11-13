@@ -98,57 +98,65 @@
                     class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                     <h1 class="h2">Usuarios Registrados</h1>
                 </div>
-
+                <form action="" method="post">
+                    <div style="margin-top: 30px;"></div>
+                    <input type="submit" value="Buscar" name="buscar">
+                    <input type="text" name="buscador" placeholder="Ingresar Nombre" required maxlength="20"
+                        pattern="[a-zA-Z ]{2,25}">
+                </form>
+                <div style="margin-bottom: 20px;"></div>
                 <div class="table-responsive">
-                    <table class="table table-striped table-sm">
-                        <thead>
-                            <tr>
-                                <th scope="col">id_user</th>
-                                <th scope="col">nombre</th>
-                                <th scope="col">correo</th>
-                                <th scope="col">sexo</th>
-                                <th scope="col">nacimiento</th>
-                                <th scope="col">direccion</th>
-                                <th scope="col">ciudad</th>
-                                <th scope="col">acumulado_compras</th>
-                                <th scope="col">num_bonos</th>
-                                <th scope="col">nombre_usuario</th>
-                                <th scope="col">password</th>
-                                <th scope="col">rol</th>
-                                <th scope="col">apellido</th>
-                                <th scope="col">cedula</th>
-                                <th scope="col">ediciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for r in registrosUsuarios %}
-                            <tr>
-                                <td>{{r[0]}}</td>
-                                <td>{{r[1]}}</td>
-                                <td>{{r[2]}}</td>
-                                <td>{{r[3]}}</td>
-                                <td>{{r[4]}}</td>
-                                <td>{{r[5]}}</td>
-                                <td>{{r[6]}}</td>
-                                <td>{{r[7]}}</td>
-                                <td>{{r[8]}}</td>
-                                <td>{{r[9]}}</td>
-                                <td>{{r[10]}}</td>
-                                <td>{{r[11]}}</td>
-                                <td>{{r[12]}}</td>
-                                <td>{{r[13]}}</td>
-                                <td>
-                                    <div class="btn-group">
-                                        <button id="editar" type="button" class="btn btn-primary"
-                                            style="margin: 5px;">Editar</button>
-                                        <button id="editar" type="button" class="btn btn-primary"
-                                            style="margin: 5px;">Eliminar</button>
-                                    </div>
-                                </td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
+                    <form action="" method="post">
+                        <table class="table table-striped table-sm">
+                            <thead>
+                                <tr>
+                                    <th scope="col">id_user</th>
+                                    <th scope="col">nombre</th>
+                                    <th scope="col">correo</th>
+                                    <th scope="col">sexo</th>
+                                    <th scope="col">nacimiento</th>
+                                    <th scope="col">direccion</th>
+                                    <th scope="col">ciudad</th>
+                                    <th scope="col">acumulado_compras</th>
+                                    <th scope="col">num_bonos</th>
+                                    <th scope="col">nombre_usuario</th>
+                                    <th scope="col">password</th>
+                                    <th scope="col">rol</th>
+                                    <th scope="col">apellido</th>
+                                    <th scope="col">cedula</th>
+                                    <th scope="col">ediciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for r in registrosUsuarios %}
+                                <tr>
+                                    <td>{{r[0]}}</td>
+                                    <td>{{r[1]}}</td>
+                                    <td>{{r[2]}}</td>
+                                    <td>{{r[3]}}</td>
+                                    <td>{{r[4]}}</td>
+                                    <td>{{r[5]}}</td>
+                                    <td>{{r[6]}}</td>
+                                    <td>{{r[7]}}</td>
+                                    <td>{{r[8]}}</td>
+                                    <td>{{r[9]}}</td>
+                                    <td>{{r[10]}}</td>
+                                    <td>{{r[11]}}</td>
+                                    <td>{{r[12]}}</td>
+                                    <td>{{r[13]}}</td>
+                                    <td>
+                                        <div class="btn-group">
+                                            <button id="editar" type="button" class="btn btn-primary"
+                                                style="margin: 5px;">Editar</button>
+                                            <button id="editar" type="button" class="btn btn-primary"
+                                                style="margin: 5px;">Eliminar</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </form>
                 </div>
                 {% endblock %}
             </main>

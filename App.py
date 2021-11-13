@@ -31,6 +31,7 @@ def conexionBaseDeDatos():
         db = g._database_USUARIO = sqlite3.connect(ruta_db)
     return db
 
+
 def handle_cart():
     products = []
     grand_total = 0
@@ -63,12 +64,8 @@ def handle_cart():
                          'imagen': product["imagen"], 'cantidad': quantity, 'total': total, 'index': index})
         index += 1
         print(4)
-        
-
-    
 
     return products, grand_total, quantity_total
-
 
 
 @app.route('/', methods=['POST', 'GET'])
@@ -103,7 +100,7 @@ def login():
                     if check_password_hash(row[0], password):
                         session["usuario"] = correo
                         session["rol"] = "comprador"
-                        session["cart"]=[]
+                        session["cart"] = []
 
                         return redirect("/")
                     else:
@@ -184,10 +181,21 @@ def registro():
     return render_template('registro.html')
 
 
+def obtenerNombreProductos():
+    conexion = conexionBaseDeDatos()
+    cur = conexion.cursor()
+    sql = "SELECT nombre_producto FROM tb_productos"
+    cur.execute(sql)
+    conexion.commit()
+    nombreProductos = cur.fetchall()
+    cur.close()
+    return nombreProductos
+
+
 @app.route('/dashboarProductos', methods=['POST', 'GET'])
 def dashboardProductos():
     if "usuario" in session:
-        registrosProductos = None
+
         try:
             conexion = conexionBaseDeDatos()
             cur = conexion.cursor()
@@ -213,7 +221,7 @@ def dashboardProductos():
                     conexion.commit()
                     registrosOrdenadosPorVentas = cur.fetchall()
                     cur.close()
-                    return render_template("dashboardProducto.html", registrosProductos=registrosOrdenadosPorVentas)
+                    return render_template("dashboardProducto.html", registrosProductos=registrosOrdenadosPorVentas, nombreProductos=obtenerNombreProductos())
 
                 if request.form.get('ordenarExistentes') == 'ordenar cantidades existentes':
                     conexion = conexionBaseDeDatos()
@@ -223,7 +231,7 @@ def dashboardProductos():
                     conexion.commit()
                     registrosOrdenadosPorExistentes = cur.fetchall()
                     cur.close()
-                    return render_template("dashboardProducto.html", registrosProductos=registrosOrdenadosPorExistentes)
+                    return render_template("dashboardProducto.html", registrosProductos=registrosOrdenadosPorExistentes, nombreProductos=obtenerNombreProductos())
 
                 if request.form.get('filtrarCategoriaBaja') == 'filtrar por categoria baja':
                     conexion = conexionBaseDeDatos()
@@ -233,7 +241,7 @@ def dashboardProductos():
                     conexion.commit()
                     registrosCategoriaBaja = cur.fetchall()
                     cur.close()
-                    return render_template("dashboardProducto.html", registrosProductos=registrosCategoriaBaja)
+                    return render_template("dashboardProducto.html", registrosProductos=registrosCategoriaBaja, nombreProductos=obtenerNombreProductos())
 
                 if request.form.get('filtrarCategoriaMedia') == 'filtrar por categoria media':
                     conexion = conexionBaseDeDatos()
@@ -243,7 +251,7 @@ def dashboardProductos():
                     conexion.commit()
                     registrosCategoriaMedia = cur.fetchall()
                     cur.close()
-                    return render_template("dashboardProducto.html", registrosProductos=registrosCategoriaMedia)
+                    return render_template("dashboardProducto.html", registrosProductos=registrosCategoriaMedia, nombreProductos=obtenerNombreProductos())
 
                 if request.form.get('filtrarCategoriaAlta') == 'filtrar por categoria alta':
                     conexion = conexionBaseDeDatos()
@@ -253,9 +261,42 @@ def dashboardProductos():
                     conexion.commit()
                     registrosCategoriaAlta = cur.fetchall()
                     cur.close()
-                    return render_template("dashboardProducto.html", registrosProductos=registrosCategoriaAlta)
+                    return render_template("dashboardProducto.html", registrosProductos=registrosCategoriaAlta, nombreProductos=obtenerNombreProductos())
 
-            return render_template("dashboardProducto.html", registrosProductos=registrosProductos)
+                if request.form.get('productosDescuento') == 'Productos con descuento':
+                    conexion = conexionBaseDeDatos()
+                    cur = conexion.cursor()
+                    sql = "SELECT * FROM tb_productos WHERE bono_descuento=?"
+                    cur.execute(sql, ['si'])
+                    conexion.commit()
+                    registrosBonoDescuento = cur.fetchall()
+                    cur.close()
+                    return render_template("dashboardProducto.html", registrosProductos=registrosBonoDescuento, nombreProductos=obtenerNombreProductos())
+
+                if request.form.get('rangoPrecio') == 'Rango de precio':
+                    min = request.form.get('min')
+                    max = request.form.get('max')
+                    conexion = conexionBaseDeDatos()
+                    cur = conexion.cursor()
+                    sql = "SELECT * FROM tb_productos WHERE valor_ventas BETWEEN ? AND ?"
+                    cur.execute(sql, [min, max])
+                    conexion.commit()
+                    registrosPorRangoPrecio = cur.fetchall()
+                    cur.close()
+                    return render_template("dashboardProducto.html", registrosProductos=registrosPorRangoPrecio, nombreProductos=obtenerNombreProductos())
+
+                if request.form.get('buscarProducto') == 'Buscar Producto':
+                    pro = request.form.get('productos')
+                    conexion = conexionBaseDeDatos()
+                    cur = conexion.cursor()
+                    sql = "SELECT * FROM tb_productos WHERE nombre_producto=?"
+                    cur.execute(sql, [str(pro)])
+                    conexion.commit()
+                    registrosPorNombreProducto = cur.fetchall()
+                    cur.close()
+                    return render_template("dashboardProducto.html", registrosProductos=registrosPorNombreProducto, nombreProductos=obtenerNombreProductos())
+
+            return render_template("dashboardProducto.html", registrosProductos=registrosProductos, nombreProductos=obtenerNombreProductos())
         except Error:
             print(Error)
             return render_template("error !!!  :| ")
@@ -319,7 +360,7 @@ def dashboardProductosVendidos():
         return "Por favor inicie sesion"
 
 
-@app.route('/dashboardUsuariosRegistrados')
+@app.route('/dashboardUsuariosRegistrados',  methods=['POST', 'GET'])
 def dashboardUsuariosRegistrados():
     if "usuario" in session:
         try:
@@ -330,15 +371,29 @@ def dashboardUsuariosRegistrados():
             conexion.commit()
             registrosUsuarios = cur.fetchall()
             cur.close()
-            print(registrosUsuarios)
+
+            if request.method == 'POST':
+                if request.form.get('buscar') == 'Buscar':
+                    usuario = request.form.get('buscador')
+                    print(usuario)
+                    conexion = conexionBaseDeDatos()
+                    cur = conexion.cursor()
+                    sql = "SELECT * FROM tb_users WHERE nombre=?"
+                    cur.execute(sql, [str(usuario)])
+                    conexion.commit()
+                    registrosUsuario = cur.fetchall()
+                    cur.close()
+                    return render_template("dashboardUsuariosRegistrados.html", registrosUsuarios=registrosUsuario)
+
             return render_template("dashboardUsuariosRegistrados.html", registrosUsuarios=registrosUsuarios)
+
         except Error:
             print(Error)
     else:
         return "Por favor inicie sesion"
 
 
-@app.route('/dashboardComentariosUsuarios')
+@ app.route('/dashboardComentariosUsuarios')
 def dashboardComentariosUsuarios():
     if "usuario" in session:
         try:
@@ -357,7 +412,7 @@ def dashboardComentariosUsuarios():
         return "Por favor inicie sesion"
 
 
-@app.route('/dashboardRegistrarUsuarioInterno', methods=['POST', 'GET'])
+@ app.route('/dashboardRegistrarUsuarioInterno', methods=['POST', 'GET'])
 def dashboardRegistrarUsuarioInterno():
     if "usuario" in session:
         if request.method == "POST":
@@ -391,7 +446,7 @@ def dashboardRegistrarUsuarioInterno():
         return "Por favor inicie sesion"
 
 
-@app.route('/dashboardRegistrosUsuariosInternos', methods=['GET'])
+@ app.route('/dashboardRegistrosUsuariosInternos', methods=['GET', 'POST'])
 def dashboardRegistrosUsuariosInternos():
     if "usuario" in session:
         try:
@@ -403,6 +458,20 @@ def dashboardRegistrosUsuariosInternos():
             registrosUsuariosInternos = cur.fetchall()
             cur.close()
             print(registrosUsuariosInternos)
+
+            if request.method == 'POST':
+                if request.form.get('buscar') == 'Buscar':
+                    usuarioInterno = request.form.get('buscadorInterno')
+                    print(usuarioInterno)
+                    conexion = conexionBaseDeDatos()
+                    cur = conexion.cursor()
+                    sql = "SELECT * FROM tb_empleados WHERE nombre=?"
+                    cur.execute(sql, [str(usuarioInterno)])
+                    conexion.commit()
+                    registrosUsuariosInternos = cur.fetchall()
+                    cur.close()
+                    return render_template('dashboardRegistrosUsuariosInternos.html', registrosUsuariosInternos=registrosUsuariosInternos)
+
             return render_template('dashboardRegistrosUsuariosInternos.html', registrosUsuariosInternos=registrosUsuariosInternos)
         except Error:
             print(Error)
@@ -410,7 +479,7 @@ def dashboardRegistrosUsuariosInternos():
         return "Por favor inicie sesion"
 
 
-@app.route('/producto/<string:id_producto>', methods=['POST', 'GET'])
+@ app.route('/producto/<string:id_producto>', methods=['POST', 'GET'])
 def producto(id_producto=None):
     if "usuario" in session:
         inicio = 1
@@ -441,7 +510,7 @@ def producto(id_producto=None):
         return render_template(ruta_productos, inicio=inicio, rol=rol, id=id)
 
 
-@app.route("/productos")
+@ app.route("/productos")
 def productos():
     if "usuario" in session:
         inicio = 1
@@ -464,7 +533,7 @@ def productos():
         return render_template(ruta_productos, inicio=inicio, rol=rol, id=id)
 
 
-@app.route("/comentar/<string:id>", methods=["GET", "POST"])
+@ app.route("/comentar/<string:id>", methods=["GET", "POST"])
 def comentar(id=None):
     if request.method == "POST":
         if "usuario" in session:
@@ -513,7 +582,7 @@ def comentar(id=None):
     return "Metodo erroneo"
 
 
-@app.route("/logout")
+@ app.route("/logout")
 def logout():
     if "usuario" in session:
         session.pop("usuario", None)
@@ -522,7 +591,7 @@ def logout():
         return "No hay sesion activa"
 
 
-@app.route("/compraExitosa")
+@ app.route("/compraExitosa")
 def compraExitosa():
     # if "usuario" in session:
     #     session.pop("usuario", None)
@@ -531,7 +600,7 @@ def compraExitosa():
     #     return "No hay sesion activa"
 
 
-@app.route("/perfil/<string:id>", methods=["GET", "POST"])
+@ app.route("/perfil/<string:id>", methods=["GET", "POST"])
 def perfil(id=id):
     if "usuario" in session:
         try:
@@ -551,36 +620,42 @@ def perfil(id=id):
             print(Error)
     return "Debe iniciar sesion"
 
-@app.route("/cart",methods=["GET","POST"])
+
+@app.route("/cart", methods=["GET", "POST"])
 def cart():
     products, grand_total, quantity_total = handle_cart()
 
-    return render_template("cart.html",products=products,grand_total=grand_total,quantity_total=quantity_total)
+    return render_template("cart.html", products=products, grand_total=grand_total, quantity_total=quantity_total)
 
-@app.route("/addToCart/<string:id_producto>",methods=["GET","POST"])
+
+@app.route("/addToCart/<string:id_producto>", methods=["GET", "POST"])
 def addToCart(id_producto=None):
     if "usuario" in session:
-        cantidad=request.form.get("cantidad")
+        cantidad = request.form.get("cantidad")
         print(cantidad)
         print(type(cantidad))
-        if cantidad=="0":
+        if cantidad == "0":
             return "Seleccione un valor mayor a 0"
-        carrito=session["cart"]
-        carrito.append({"id":id_producto,"cantidad":cantidad})
-        session["cart"]=carrito
-       
+        carrito = session["cart"]
+        carrito.append({"id": id_producto, "cantidad": cantidad})
+        session["cart"] = carrito
+
         return redirect("/productos")
     else:
         return "Debe iniciar sesion"
 
-@app.route("/remove_from_cart/<string:index>",methods=["GET","POST"])
+
+@app.route("/remove_from_cart/<string:index>", methods=["GET", "POST"])
 def remove_from_cart(index):
     del session['cart'][int(index)]
     session.modified = True
     return redirect(url_for("cart"))
 
-@app.route("/checkout",methods=["GET","POST"])
+
+@app.route("/checkout", methods=["GET", "POST"])
 def checkout():
     return render_template(ruta_index)
+
+
 if __name__ == "__main__":
     app.run(debug=True, port=8000)

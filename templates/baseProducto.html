@@ -20,6 +20,8 @@
             </div>
             <label for="" class="form-label">Precio</label>
             <div style="margin-top: 10px;">{{row_producto.precio_unidad}}</div>
+            <label for="" class="form-label">Puntuacion</label>
+            <div style="margin-top: 10px;">{{row_producto.calificacion_producto}}</div>
             <div class="form-floating" style="margin-top: 10px;">
                 <select class="form-select" id="floatingSelect" aria-label="Floating label select example">
                     <option selected>0</option>
@@ -49,36 +51,24 @@
             <form action="/comentar/{{row_producto.id_producto}}" method="post" class="input-group">
             
                     <span class="input-group-text">Escribe tu comentario</span>
-                    <textarea class="form-control" aria-label="With textarea"></textarea>
+                    <textarea class="form-control" name="comentario" aria-label="With textarea"></textarea>
                     <span class="input-group-text">Puntuacion</span>
-                    <input type="number" placeholder="1-5" min="1" max="5">
+                    <input type="number" name="puntuacion" placeholder="1-5" min="1" max="5">
                     <input class="btn btn-primary" type="submit" style="margin-left: 10px;" value="Comentar">
                 
             </form>
             <hr>
             <div style="margin-top: 20px; text-align: center;">
-                <strong><label for="floatingSelect">Historial de Preguntas</label></strong>
+                <strong><label for="floatingSelect">Descripcion del producto</label></strong>
             </div>
             <!-- jinja2 -->
             <div class="pregunta" style="margin-right: 30px; margin-left: 30px; margin-top: 10px;">
-                ¿el producto viene refigerado?
-            </div>
-            <div class="respuesta" style="margin-right: 30px; margin-left: 30px;">
-                por supuesto, producto viene refigerado a una temperadura adecuada que evitara que se dañe
-            </div>
-            <div class="pregunta" style="margin-right: 30px; margin-left: 30px; margin-top: 10px;">
-                ¿el producto viene refigerado?
-            </div>
-            <div class="respuesta" style="margin-right: 30px; margin-left: 30px;">
-                por supuesto, producto viene refigerado a una temperadura adecuada que evitara que se dañe
+                {{row_producto.descripcion}}
             </div>
         </div>
         <div class="seccionVendedor"
             style="border-top: 1px solid rgba(0, 0, 0, 0.200); border-right: 1px solid rgba(0, 0, 0, 0.200);">
-            <div style="text-align: center;">
-                <label for="" class="form-label">Informacion del vendedor</label>
-                <hr>
-            </div>
+            
             <div style="text-align: center;">
                 <label for="" class="form-label">Ubicacion de la tienda</label>
             </div>
@@ -102,11 +92,9 @@
             </div>
             <!-- jinja2 -->
             <ul class="list-group">
-                <li class="list-group-item">comentario 1</li>
-                <li class="list-group-item">comentario 2</li>
-                <li class="list-group-item">comentario 3</li>
-                <li class="list-group-item">comentario 4</li>
-                <li class="list-group-item">comentario 5</li>
+                {% for r in row_comentarios %}
+                <li class="list-group-item"><b>Comentario:</b> {{r.comentario}} | <b>Usuario:</b> {{r.usuario}} | <b>Puntuacion:</b> {{r.calificacion}}</li>
+                {% endfor %}
             </ul>
         </div>
         <div class="seccionNueva"

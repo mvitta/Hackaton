@@ -26,12 +26,19 @@
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item"><a class="nav-link" href="/productos">Productos</a></li>
                     <li class="nav-item"><a class="nav-link" href="/busqueda">Busqueda</a></li>
+                    {% if rol=="interno" or rol=="superadministrador" %}
                     <li class="nav-item"><a class="nav-link" href="{{url_for('dashboardProductos')}}">Dashboard</a></li>
+                    {%endif%}
+
+                {% if inicio!=1 %}  
                 </ul><span class="navbar-text actions"> <a class="login" href="{{url_for('login')}}">Iniciar
                         Sesión</a></span>
                 <span class="navbar-text actions"><a class="btn btn-light action-button" role="button"
                         href="{{url_for('registro')}}">Registro</a></span>
-
+                {% else %}
+                </ul><span class="navbar-text actions"> <a class="login" href="{{url_for('logout')}}">Cerrar
+                Sesión</a></span>
+                {%endif%}
             </div>
         </div>
     </nav>

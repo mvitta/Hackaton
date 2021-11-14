@@ -134,10 +134,28 @@
                   <th scope="col">bono_decuento</th>
                   <th scope="col">calificacion_producto</th>
                   <th scope="col">total_unidades</th>
-
                 </tr>
               </thead>
               <tbody>
+                {% if actualizar %}
+                {% for r in registrosProductoPorID %}
+                <tr>
+                  <td><input type="submit" name="confirmar" value="confirmar"></td>
+                  <td></td>
+                  <td><input type="text" value="{{r[1]}}" name="op1"></td>
+                  <td><input type="text" value="{{r[2]}}" name="op2"></td>
+                  <td><input type="text" value="{{r[3]}}" name="op3"></td>
+                  <td><input type="text" value="{{r[4]}}" name="op4"></td>
+                  <td><input type="text" value="{{r[5]}}" name="op5"></td>
+                  <td><input type="text" value="{{r[6]}}" name="op6"></td>
+                  <td><input type="text" value="{{r[7]}}" name="op7"></td>
+                  <td><input type="text" value="{{r[8]}}" name="op8"></td>
+                  <td><input type="text" value="{{r[9]}}" name="op9"></td>
+                  <td><input type="text" value="{{r[10]}}" name="op10"></td>
+                  <td><input type="text" value="{{r[12]}}" name="op12"></td>
+                </tr>
+                {% endfor %}
+                {% endif %}
                 {% for r in registrosProductos %}
                 <tr>
                   <td><input type="radio" name="seleccionar" value="{{r[0]}}"></td>
@@ -158,8 +176,10 @@
               </tbody>
             </table>
             <div class="btn-group">
-              <input value="editar" name="editar" id="editar" type="submit" class="btn btn-primary" style="margin: 5px;">
-              <input value="eliminar" name="eliminar" id="eliminar" type="submit" class="btn btn-primary" style="margin: 5px;">
+              <input value="editar" name="editar" id="editar" type="submit" class="btn btn-primary"
+                style="margin: 5px;">
+              <input value="eliminar" name="eliminar" id="eliminar" type="submit" class="btn btn-primary"
+                style="margin: 5px;">
             </div>
           </form>
         </div>

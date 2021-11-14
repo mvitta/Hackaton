@@ -11,7 +11,6 @@ import hashlib
 from werkzeug.exceptions import UnsupportedMediaType
 from werkzeug.security import generate_password_hash, check_password_hash
 
-
 compExitosa = "compraExitosa.html"
 ruta_perfil = "perfil.html"
 ruta_index = "index.html"
@@ -199,7 +198,6 @@ def obtenerNombreProductos():
 @app.route('/dashboarProductos', methods=['POST', 'GET'])
 def dashboardProductos():
     if "usuario" in session:
-
         try:
             conexion = conexionBaseDeDatos()
             cur = conexion.cursor()
@@ -311,6 +309,45 @@ def dashboardProductos():
                     registrosProductoEliminado = cur.fetchall()
                     cur.close()
                     return render_template("dashboardProducto.html", registrosProductos=registrosProductoEliminado, nombreProductos=obtenerNombreProductos())
+
+                if request.form.get('editar') == 'editar':
+                    actualizar = True
+                    session['id_producto'] = request.form.get('seleccionar')
+                    conexion = conexionBaseDeDatos()
+                    cur = conexion.cursor()
+                    sql = "SELECT * FROM tb_productos WHERE id_producto=?"
+                    cur.execute(sql, session['id_producto'])
+                    conexion.commit()
+                    registrosProductoPorID = cur.fetchall()
+                    cur.close()
+                    return render_template("dashboardProducto.html", registrosProductos=registrosProductos, nombreProductos=obtenerNombreProductos(), actualizar=actualizar, registrosProductoPorID=registrosProductoPorID)
+
+                if request.form.get('confirmar') == 'confirmar':
+                    nombreProducto = request.form.get('op1')
+                    categoria = request.form.get('op2')
+                    descrip = request.form.get('op3')
+                    tipoUnidad = request.form.get('op4')
+                    precioUnidad = request.form.get('op5')
+                    unidadesVendidas = request.form.get('op6')
+                    porcePromo = request.form.get('op7')
+                    valorVentas = request.form.get('op8')
+                    bonoDescuento = request.form.get('op9')
+                    califProducto = request.form.get('op10')
+                    totalUnidades = request.form.get('op12')
+                
+                    conexion = conexionBaseDeDatos()
+                    cur = conexion.cursor()
+                    sql = "UPDATE tb_productos SET nombre_producto=?, categoria=?, descripcion=?, tipo_unidad=?, precio_unidad=?, unidades_vendidas=?, porcentaje_promo=?, valor_ventas=?, bono_descuento=?, calificacion_producto=?, total_unidades=? WHERE id_producto=? "
+                    cur.execute(sql, [nombreProducto, categoria, descrip, tipoUnidad, precioUnidad, unidadesVendidas,
+                                porcePromo, valorVentas, bonoDescuento, califProducto, totalUnidades, session['id_producto']])
+                    conexion.commit()
+
+                    sql = "SELECT * FROM tb_productos"
+                    cur.execute(sql)
+                    conexion.commit()
+                    registrosProductoEditado = cur.fetchall()
+                    cur.close()
+                return render_template("dashboardProducto.html", registrosProductos=registrosProductoEditado, nombreProductos=obtenerNombreProductos())
 
             return render_template("dashboardProducto.html", registrosProductos=registrosProductos, nombreProductos=obtenerNombreProductos())
         except Error:

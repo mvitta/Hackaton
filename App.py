@@ -212,10 +212,7 @@ def dashboardProductos():
             for registro in registrosProductos:
                 r = list(registro)
                 r.pop(len(r) - 2)
-
                 print(r)
-
-            print(len(registrosProductos))
             if request.method == 'POST':
                 if request.form.get('ordenarVentas') == 'ordenar por mayor ventas':
                     conexion = conexionBaseDeDatos()
@@ -299,6 +296,21 @@ def dashboardProductos():
                     registrosPorNombreProducto = cur.fetchall()
                     cur.close()
                     return render_template("dashboardProducto.html", registrosProductos=registrosPorNombreProducto, nombreProductos=obtenerNombreProductos())
+
+                if request.form.get('eliminar') == 'eliminar':
+                    id_pro = request.form.get('seleccionar')
+                    conexion = conexionBaseDeDatos()
+                    cur = conexion.cursor()
+                    sql = "DELETE FROM tb_productos WHERE id_producto=?"
+                    cur.execute(sql, [id_pro])
+                    conexion.commit()
+
+                    sql = "SELECT * FROM tb_productos"
+                    cur.execute(sql)
+                    conexion.commit()
+                    registrosProductoEliminado = cur.fetchall()
+                    cur.close()
+                    return render_template("dashboardProducto.html", registrosProductos=registrosProductoEliminado, nombreProductos=obtenerNombreProductos())
 
             return render_template("dashboardProducto.html", registrosProductos=registrosProductos, nombreProductos=obtenerNombreProductos())
         except Error:
@@ -389,6 +401,21 @@ def dashboardUsuariosRegistrados():
                     cur.close()
                     return render_template("dashboardUsuariosRegistrados.html", registrosUsuarios=registrosUsuario)
 
+                if request.form.get('eliminar') == 'eliminar':
+                    id_user = request.form.get('seleccionar')
+                    conexion = conexionBaseDeDatos()
+                    cur = conexion.cursor()
+                    sql = "DELETE FROM tb_users WHERE id_user=?"
+                    cur.execute(sql, [id_user])
+                    conexion.commit()
+
+                    sql = "SELECT * FROM tb_users"
+                    cur.execute(sql)
+                    conexion.commit()
+                    registrosUsuario = cur.fetchall()
+                    cur.close()
+                    return render_template("dashboardUsuariosRegistrados.html", registrosUsuarios=registrosUsuario)
+
             return render_template("dashboardUsuariosRegistrados.html", registrosUsuarios=registrosUsuarios)
 
         except Error:
@@ -408,6 +435,22 @@ def dashboardComentariosUsuarios():
             conexion.commit()
             registrosComentarios = cur.fetchall()
             cur.close()
+
+            if request.form.get('eliminar') == 'eliminar':
+                id_comen = request.form.get('seleccionar')
+                conexion = conexionBaseDeDatos()
+                cur = conexion.cursor()
+                sql = "DELETE FROM tb_comentario WHERE id_comentario=?"
+                cur.execute(sql, [id_comen])
+                conexion.commit()
+
+                sql = "SELECT * FROM tb_empleados"
+                cur.execute(sql)
+                conexion.commit()
+                registrosComentariosEliminados = cur.fetchall()
+                cur.close()
+                return render_template('dashboardComentariosUsuarios.html', registrosComentarios=registrosComentariosEliminados)
+
             return render_template('dashboardComentariosUsuarios.html', registrosComentarios=registrosComentarios)
         except Error:
             print(Error)
@@ -463,7 +506,6 @@ def dashboardRegistrosUsuariosInternos():
             conexion.commit()
             registrosUsuariosInternos = cur.fetchall()
             cur.close()
-            print(registrosUsuariosInternos)
 
             if request.method == 'POST':
                 if request.form.get('buscar') == 'Buscar':
@@ -478,6 +520,20 @@ def dashboardRegistrosUsuariosInternos():
                     cur.close()
                     return render_template('dashboardRegistrosUsuariosInternos.html', registrosUsuariosInternos=registrosUsuariosInternos)
 
+                if request.form.get('eliminar') == 'eliminar':
+                    id_empl = request.form.get('seleccionar')
+                    conexion = conexionBaseDeDatos()
+                    cur = conexion.cursor()
+                    sql = "DELETE FROM tb_empleados WHERE id_empleado=?"
+                    cur.execute(sql, [id_empl])
+                    conexion.commit()
+
+                    sql = "SELECT * FROM tb_empleados"
+                    cur.execute(sql)
+                    conexion.commit()
+                    registrosUsuariosInternosEliminado = cur.fetchall()
+                    cur.close()
+                    return render_template('dashboardRegistrosUsuariosInternos.html', registrosUsuariosInternos=registrosUsuariosInternosEliminado)
             return render_template('dashboardRegistrosUsuariosInternos.html', registrosUsuariosInternos=registrosUsuariosInternos)
         except Error:
             print(Error)

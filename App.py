@@ -660,7 +660,37 @@ def remove_from_cart(index):
 
 @app.route("/checkout", methods=["GET", "POST"])
 def checkout():
-    return render_template(ruta_index)
+    for item in session["cart"]:
+        print(item["id"])
+        try:
+            with sqlite3.connect(ruta_db) as con:
+                con.row_factory = sqlite3.Row
+                cur=con.cursor()
+                print("Antes del select")
+                cur.execute("SELECT * FROM tb_productos WHERE id_producto=?", [item["id"]])
+                row_producto = cur.fetchone()
+                print("Select bien")
+                print(row_producto["precio_unidad"])
+                print(type(row_producto["precio_unidad"]))
+                print(item["cantidad"])
+                print(type(item["cantidad"]))
+                quantity = int(item['cantidad'])
+                print(type(quantity))
+                valor_ventas = quantity * row_producto["precio_unidad"]
+                print(valor_ventas)
+                cur=con.cursor()
+                cur.execute("UPDATE tb_productos SET unidades_vendidas=unidades_vendidas+?, valor_ventas=valor_ventas+?, total_unidades=total_unidades-? where id_producto=?",(quantity,valor_ventas,quantity,item["id"]))
+                con.commit()
+                cur.execute("UPDATE tb_users SET acumulado_compras=acumulado_compras+? where correo=?",(valor_ventas,session["usuario"]))
+                con.commit()
+                session["cart"]=[]
+        except:
+            print("Error")
+            return "Error"
+    return render_template("compraExitosa.html",inicio=1, rol="comprador")
+    
+
+
 
 
 if __name__ == "__main__":

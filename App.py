@@ -657,7 +657,7 @@ def logout():
 def compraExitosa():
     # if "usuario" in session:
     #     session.pop("usuario", None)
-    return render_template(compExitosa)
+    return render_template(compExitosa, inicio=1, rol=0, id=session["usuario"])
     # else:
     #     return "No hay sesion activa"
 
@@ -687,7 +687,7 @@ def perfil(id=id):
 def cart():
     products, grand_total, quantity_total = handle_cart()
 
-    return render_template("cart.html", products=products, grand_total=grand_total, quantity_total=quantity_total)
+    return render_template("cart.html", products=products, grand_total=grand_total, quantity_total=quantity_total, inicio=1, rol="comprador",id=session["usuario"])
 
 
 @app.route("/addToCart/<string:id_producto>", methods=["GET", "POST"])
@@ -722,29 +722,57 @@ def checkout():
             with sqlite3.connect(ruta_db) as con:
                 con.row_factory = sqlite3.Row
                 cur=con.cursor()
-                print("Antes del select")
                 cur.execute("SELECT * FROM tb_productos WHERE id_producto=?", [item["id"]])
                 row_producto = cur.fetchone()
-                print("Select bien")
-                print(row_producto["precio_unidad"])
-                print(type(row_producto["precio_unidad"]))
-                print(item["cantidad"])
-                print(type(item["cantidad"]))
                 quantity = int(item['cantidad'])
-                print(type(quantity))
                 valor_ventas = quantity * row_producto["precio_unidad"]
-                print(valor_ventas)
                 cur=con.cursor()
                 cur.execute("UPDATE tb_productos SET unidades_vendidas=unidades_vendidas+?, valor_ventas=valor_ventas+?, total_unidades=total_unidades-? where id_producto=?",(quantity,valor_ventas,quantity,item["id"]))
                 con.commit()
                 cur.execute("UPDATE tb_users SET acumulado_compras=acumulado_compras+? where correo=?",(valor_ventas,session["usuario"]))
                 con.commit()
-                session["cart"]=[]
+
+                cur = con.cursor()
+                cur.execute("INSERT INTO tb_ventas (producto, num_unidades, bono_descuento, descuento, total) VALUES (?,?,?,?,?)", (
+                    row_producto["nombre_producto"], quantity,"no",0,valor_ventas))
+                con.commit()
+
+                
+
+
         except:
             print("Error")
             return "Error"
+    session["cart"]=[]
     return render_template("compraExitosa.html",inicio=1, rol="comprador")
     
+@app.route('/eliminarComentario/<string:id>', methods=["GET","POST"])
+def eliminarComentario(id=None):
+    try:
+        with sqlite3.connect(ruta_db) as con:
+            con.row_factory = sqlite3.Row  # Convierte la respuesta de la BD en un diccionario
+            cur = con.cursor()
+            cur.execute("SELECT * FROM tb_users WHERE correo=?", [session["usuario"]])
+            row_perfil = cur.fetchone()
+         
+            con.row_factory = sqlite3.Row  # Convierte la respuesta de la BD en un diccionario
+            cur = con.cursor()
+            cur.execute(
+                "SELECT * FROM tb_comentario WHERE usuario=?", [session["usuario"]])
+            row_comentarios = cur.fetchall()
+            
+            cur = con.cursor()
+            cur.execute("DELETE FROM tb_comentario WHERE id_comentario = ?",[int(id)])
+            
+            con.row_factory = sqlite3.Row  # Convierte la respuesta de la BD en un diccionario
+            cur = con.cursor()
+            cur.execute(
+                "SELECT * FROM tb_comentario WHERE usuario=?", [session["usuario"]])
+            row_comentarios = cur.fetchall()
+            return render_template(ruta_perfil, row_usuario=row_perfil, row_comentarios=row_comentarios, inicio=1, id=session["usuario"])
+    except:
+        print("Error")
+        return "Error"
 
 
 

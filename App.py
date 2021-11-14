@@ -104,7 +104,7 @@ def login():
 
                         return redirect("/")
                     else:
-                        return render_template(ruta_index, rol=session["rol"])
+                        return "Contraseña incorrecta"
         except Error:
             print(Error)
     return render_template(ruta_login)
@@ -157,6 +157,7 @@ def loginSuperAdministrador():
 def registro():
     if request.method == "POST":
         nombre = escape(request.form.get('Nombre'))
+        nombre=nombre.lower()
         correo = escape(request.form.get('Correo'))
         sexo = escape(request.form.get('flexRadioDefault'))
         nacimiento = escape(request.form.get('fecha'))
@@ -166,7 +167,10 @@ def registro():
         password = escape(request.form.get('Contra'))
         hash = generate_password_hash(password)
         apellido = escape(request.form.get('Apellido'))
+        apellido=apellido.lower()
         cedula = escape(request.form.get('Cedula'))
+
+        
         try:
             conexion = conexionBaseDeDatos()
             cur = conexion.cursor()
@@ -417,6 +421,7 @@ def dashboardRegistrarUsuarioInterno():
     if "usuario" in session:
         if request.method == "POST":
             nombre = escape(request.form.get('Nombre'))
+            nombre=nombre.lower()
             correo = escape(request.form.get('Correo'))
             sexo = escape(request.form.get('flexRadioDefault'))
             nacimiento = escape(request.form.get('fecha'))
@@ -427,6 +432,7 @@ def dashboardRegistrarUsuarioInterno():
             password = escape(request.form.get('Contra'))
             hash = generate_password_hash(password)
             apellido = escape(request.form.get('Apellido'))
+            apellido=apellido.lower()
             cedula = escape(request.form.get('Cedula'))
 
             try:

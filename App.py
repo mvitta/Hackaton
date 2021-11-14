@@ -220,7 +220,7 @@ def dashboardProductos():
                     conexion.commit()
                     registrosOrdenadosPorVentas = cur.fetchall()
                     cur.close()
-                    return render_template("dashboardProducto.html", registrosProductos=registrosOrdenadosPorVentas, nombreProductos=obtenerNombreProductos())
+                    return render_template("dashboardProducto.html", registrosProductos=registrosOrdenadosPorVentas, nombreProductos=obtenerNombreProductos(),rol="interno", inicio=1)
 
                 if request.form.get('ordenarExistentes') == 'ordenar cantidades existentes':
                     conexion = conexionBaseDeDatos()
@@ -230,7 +230,7 @@ def dashboardProductos():
                     conexion.commit()
                     registrosOrdenadosPorExistentes = cur.fetchall()
                     cur.close()
-                    return render_template("dashboardProducto.html", registrosProductos=registrosOrdenadosPorExistentes, nombreProductos=obtenerNombreProductos())
+                    return render_template("dashboardProducto.html", registrosProductos=registrosOrdenadosPorExistentes, nombreProductos=obtenerNombreProductos(),rol="interno", inicio=1)
 
                 if request.form.get('filtrarCategoriaBaja') == 'filtrar por categoria baja':
                     conexion = conexionBaseDeDatos()
@@ -240,7 +240,7 @@ def dashboardProductos():
                     conexion.commit()
                     registrosCategoriaBaja = cur.fetchall()
                     cur.close()
-                    return render_template("dashboardProducto.html", registrosProductos=registrosCategoriaBaja, nombreProductos=obtenerNombreProductos())
+                    return render_template("dashboardProducto.html", registrosProductos=registrosCategoriaBaja, nombreProductos=obtenerNombreProductos(),rol="interno", inicio=1)
 
                 if request.form.get('filtrarCategoriaMedia') == 'filtrar por categoria media':
                     conexion = conexionBaseDeDatos()
@@ -250,7 +250,7 @@ def dashboardProductos():
                     conexion.commit()
                     registrosCategoriaMedia = cur.fetchall()
                     cur.close()
-                    return render_template("dashboardProducto.html", registrosProductos=registrosCategoriaMedia, nombreProductos=obtenerNombreProductos())
+                    return render_template("dashboardProducto.html", registrosProductos=registrosCategoriaMedia, nombreProductos=obtenerNombreProductos(),rol="interno", inicio=1)
 
                 if request.form.get('filtrarCategoriaAlta') == 'filtrar por categoria alta':
                     conexion = conexionBaseDeDatos()
@@ -260,7 +260,7 @@ def dashboardProductos():
                     conexion.commit()
                     registrosCategoriaAlta = cur.fetchall()
                     cur.close()
-                    return render_template("dashboardProducto.html", registrosProductos=registrosCategoriaAlta, nombreProductos=obtenerNombreProductos())
+                    return render_template("dashboardProducto.html", registrosProductos=registrosCategoriaAlta, nombreProductos=obtenerNombreProductos(),rol="interno", inicio=1)
 
                 if request.form.get('productosDescuento') == 'Productos con descuento':
                     conexion = conexionBaseDeDatos()
@@ -270,7 +270,7 @@ def dashboardProductos():
                     conexion.commit()
                     registrosBonoDescuento = cur.fetchall()
                     cur.close()
-                    return render_template("dashboardProducto.html", registrosProductos=registrosBonoDescuento, nombreProductos=obtenerNombreProductos())
+                    return render_template("dashboardProducto.html", registrosProductos=registrosBonoDescuento, nombreProductos=obtenerNombreProductos(),rol="interno", inicio=1)
 
                 if request.form.get('rangoPrecio') == 'Rango de precio':
                     min = request.form.get('min')
@@ -282,7 +282,7 @@ def dashboardProductos():
                     conexion.commit()
                     registrosPorRangoPrecio = cur.fetchall()
                     cur.close()
-                    return render_template("dashboardProducto.html", registrosProductos=registrosPorRangoPrecio, nombreProductos=obtenerNombreProductos())
+                    return render_template("dashboardProducto.html", registrosProductos=registrosPorRangoPrecio, nombreProductos=obtenerNombreProductos(),rol="interno", inicio=1)
 
                 if request.form.get('buscarProducto') == 'Buscar Producto':
                     pro = request.form.get('productos')
@@ -293,7 +293,7 @@ def dashboardProductos():
                     conexion.commit()
                     registrosPorNombreProducto = cur.fetchall()
                     cur.close()
-                    return render_template("dashboardProducto.html", registrosProductos=registrosPorNombreProducto, nombreProductos=obtenerNombreProductos())
+                    return render_template("dashboardProducto.html", registrosProductos=registrosPorNombreProducto, nombreProductos=obtenerNombreProductos(),rol="interno", inicio=1)
 
                 if request.form.get('eliminar') == 'eliminar':
                     id_pro = request.form.get('seleccionar')
@@ -308,7 +308,7 @@ def dashboardProductos():
                     conexion.commit()
                     registrosProductoEliminado = cur.fetchall()
                     cur.close()
-                    return render_template("dashboardProducto.html", registrosProductos=registrosProductoEliminado, nombreProductos=obtenerNombreProductos())
+                    return render_template("dashboardProducto.html", registrosProductos=registrosProductoEliminado, nombreProductos=obtenerNombreProductos(),rol="interno", inicio=1)
 
                 if request.form.get('editar') == 'editar':
                     actualizar = True
@@ -320,7 +320,7 @@ def dashboardProductos():
                     conexion.commit()
                     registrosProductoPorID = cur.fetchall()
                     cur.close()
-                    return render_template("dashboardProducto.html", registrosProductos=registrosProductos, nombreProductos=obtenerNombreProductos(), actualizar=actualizar, registrosProductoPorID=registrosProductoPorID)
+                    return render_template("dashboardProducto.html", registrosProductos=registrosProductos, nombreProductos=obtenerNombreProductos(), actualizar=actualizar, registrosProductoPorID=registrosProductoPorID,rol="interno", inicio=1)
 
                 if request.form.get('confirmar') == 'confirmar':
                     nombreProducto = request.form.get('op1')
@@ -347,9 +347,9 @@ def dashboardProductos():
                     conexion.commit()
                     registrosProductoEditado = cur.fetchall()
                     cur.close()
-                return render_template("dashboardProducto.html", registrosProductos=registrosProductoEditado, nombreProductos=obtenerNombreProductos())
+                return render_template("dashboardProducto.html", registrosProductos=registrosProductoEditado, nombreProductos=obtenerNombreProductos(),rol="interno", inicio=1)
 
-            return render_template("dashboardProducto.html", registrosProductos=registrosProductos, nombreProductos=obtenerNombreProductos())
+            return render_template("dashboardProducto.html", registrosProductos=registrosProductos, nombreProductos=obtenerNombreProductos(),rol="interno", inicio=1)
         except Error:
             print(Error)
             return render_template("error !!!  :| ")
@@ -383,7 +383,7 @@ def dashboardCrearProducto():
                 print(err)
     else:
         return "Por favor inicie sesion"
-    return render_template("dashboardCrearProducto.html")
+    return render_template("dashboardCrearProducto.html",rol="interno", inicio=1)
 
 
 @app.route('/dashboardLotes')
@@ -397,7 +397,7 @@ def dashboardLotes():
             conexion.commit()
             registrosLotesProductos = cur.fetchall()
             cur.close()
-            return render_template('dashboardLotes.html', registrosLotesProductos=registrosLotesProductos)
+            return render_template('dashboardLotes.html', registrosLotesProductos=registrosLotesProductos,rol="interno", inicio=1)
         except Error:
             print(Error)
             return render_template("error !!!  :| ")
@@ -408,7 +408,7 @@ def dashboardLotes():
 @app.route('/dashboardProductosVendidos')
 def dashboardProductosVendidos():
     if "usuario" in session:
-        return render_template('dashboardProductosVendidos.html')
+        return render_template('dashboardProductosVendidos.html',rol="interno", inicio=1)
     else:
         return "Por favor inicie sesion"
 
@@ -453,7 +453,7 @@ def dashboardUsuariosRegistrados():
                     cur.close()
                     return render_template("dashboardUsuariosRegistrados.html", registrosUsuarios=registrosUsuario)
 
-            return render_template("dashboardUsuariosRegistrados.html", registrosUsuarios=registrosUsuarios)
+            return render_template("dashboardUsuariosRegistrados.html", registrosUsuarios=registrosUsuarios,rol="interno", inicio=1)
 
         except Error:
             print(Error)
@@ -486,9 +486,9 @@ def dashboardComentariosUsuarios():
                 conexion.commit()
                 registrosComentariosEliminados = cur.fetchall()
                 cur.close()
-                return render_template('dashboardComentariosUsuarios.html', registrosComentarios=registrosComentariosEliminados)
+                return render_template('dashboardComentariosUsuarios.html', registrosComentarios=registrosComentariosEliminados,rol="interno", inicio=1)
 
-            return render_template('dashboardComentariosUsuarios.html', registrosComentarios=registrosComentarios)
+            return render_template('dashboardComentariosUsuarios.html', registrosComentarios=registrosComentarios,rol="interno", inicio=1)
         except Error:
             print(Error)
             return render_template("error !!!  :| ")
@@ -523,11 +523,11 @@ def dashboardRegistrarUsuarioInterno():
                             nacimiento, direccion, ciudad, nombre_usuario, hash, "interno"])
                 conexion.commit()
                 cur.close()
-                return render_template("dashboardRegistrarUsuarioInterno.html")
+                return render_template("dashboardRegistrarUsuarioInterno.html",rol="interno", inicio=1)
             except Error as err:
                 print(err)
 
-        return render_template('dashboardRegistrarUsuarioInterno.html')
+        return render_template('dashboardRegistrarUsuarioInterno.html',rol="interno", inicio=1)
     else:
         return "Por favor inicie sesion"
 
@@ -555,7 +555,7 @@ def dashboardRegistrosUsuariosInternos():
                     conexion.commit()
                     registrosUsuariosInternos = cur.fetchall()
                     cur.close()
-                    return render_template('dashboardRegistrosUsuariosInternos.html', registrosUsuariosInternos=registrosUsuariosInternos)
+                    return render_template('dashboardRegistrosUsuariosInternos.html', registrosUsuariosInternos=registrosUsuariosInternos,rol="interno", inicio=1)
 
                 if request.form.get('eliminar') == 'eliminar':
                     id_empl = request.form.get('seleccionar')
@@ -570,8 +570,8 @@ def dashboardRegistrosUsuariosInternos():
                     conexion.commit()
                     registrosUsuariosInternosEliminado = cur.fetchall()
                     cur.close()
-                    return render_template('dashboardRegistrosUsuariosInternos.html', registrosUsuariosInternos=registrosUsuariosInternosEliminado)
-            return render_template('dashboardRegistrosUsuariosInternos.html', registrosUsuariosInternos=registrosUsuariosInternos)
+                    return render_template('dashboardRegistrosUsuariosInternos.html', registrosUsuariosInternos=registrosUsuariosInternosEliminado,rol="interno", inicio=1)
+            return render_template('dashboardRegistrosUsuariosInternos.html', registrosUsuariosInternos=registrosUsuariosInternos,rol="interno", inicio=1)
         except Error:
             print(Error)
     else:

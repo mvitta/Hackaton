@@ -39,10 +39,15 @@
                 <span class="navbar-text actions"><a class="btn btn-light action-button" role="button"
                         href="{{url_for('registro')}}">Registro</a></span>
                 {% else %}
-                <li class="nav-item"><a class="nav-link" href="/perfil/{{id}}">Perfil</a></li>
-                <li class="nav-item"><a class="nav-link" href="/cart">Carrito</a></li>
-                </ul><span class="navbar-text actions"> <a class="login" href="{{url_for('logout')}}">Cerrar
-                Sesión</a></span>
+                    {% if rol=="comprador"%}
+                    <li class="nav-item"><a class="nav-link" href="/perfil/{{id}}">Perfil</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/cart">Carrito</a></li>
+                    </ul><span class="navbar-text actions"> <a class="login" href="{{url_for('logout')}}">Cerrar
+                    Sesión</a></span>
+                    {%else%}
+                    </ul><span class="navbar-text actions"> <a class="login" href="{{url_for('logout')}}">Cerrar
+                    Sesión</a></span>
+                    {%endif%}
                 {%endif%}
             </div>
         </div>
